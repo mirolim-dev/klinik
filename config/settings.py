@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'outlook',
+    'account',
 ]
 
 MIDDLEWARE = [
@@ -127,5 +128,7 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = 'media/'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
+
+AUTH_USER_MODEL = "account.CustomUser"
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
