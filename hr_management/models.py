@@ -7,17 +7,9 @@ import string
 from .validators import validate_insurance_fields
 # Create your models here.
 class Patient(CustomUser):
-    password = None
-    last_login = None
-    is_staff = None
-    is_superuser = None
-    groups = None
-    user_permissions = None
     date_of_birth = models.DateField()
-    insurance_provider = models.CharField(max_length=255, blank=True,
-                                validators=[validate_insurance_fields])
-    insurance_policy_number = models.CharField(max_length=100, blank=True,
-                                validators=[validate_insurance_fields])
+    insurance_provider = models.CharField(max_length=255, blank=True)
+    insurance_policy_number = models.CharField(max_length=100, blank=True)
     registered_at = models.DateTimeField(auto_now_add=True)
     edited_at = models.DateTimeField(auto_now=True)
 
@@ -28,6 +20,10 @@ class Patient(CustomUser):
         if not self.pk:#works when Patient created
             self.__set_password()
         super().save(*args, **kwargs)
+    
+    def clean(self) -> None:
+        super().clean()
+        validate_insurance_fields(self.insurance_provider, self.insurance_policy_number)
 
     def __set_password(self):
         """Sets random password to CustomUser's password field"""

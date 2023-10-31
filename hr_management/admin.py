@@ -10,5 +10,6 @@ class PatientAdmin(admin.ModelAdmin):
     list_display_links = ['first_name']
     list_editable = ['phone', 'address']
     exclude = ('username', 'password', 'last_login', 'is_active', 'is_staff',  
-                'is_superuser', 'groups', 'user_permissions')
+                    'is_superuser', 'groups', 'user_permissions')
 admin.site.register(Patient, PatientAdmin)
+# admin.site.register(Patient, PatientAdmin)
