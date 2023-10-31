@@ -29,6 +29,10 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=255, unique=True)
     first_name = models.CharField(max_length=25, blank=True)
     last_name = models.CharField(max_length=255, blank=True)
+    GENDER_CHOICES = (
+        (0, "Female"),
+        (1, "Male")
+    )
     # email = models.EmailField(unique=True)
     password = models.CharField(max_length=128)
     phone = models.CharField(
@@ -37,6 +41,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
                 regex=r'^\+?[0-9]+$',
                 message='Phone number must be a valid numeric value.')]
     )
+    gender = models.IntegerField(choices=GENDER_CHOICES, default=1)
+    address = models.CharField(max_length=255, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     is_active = models.BooleanField(default=True)
