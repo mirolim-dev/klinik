@@ -5,6 +5,9 @@ import string
 
 # from local
 from .validators import validate_insurance_fields
+from .specialization_models import StuffSpecialization, DoctorSpecialization
+from datetime import datetime, timedelta
+from .utils import generate_barcode
 # Create your models here.
 class Patient(CustomUser):
     date_of_birth = models.DateField()
@@ -34,3 +37,6 @@ class Patient(CustomUser):
 
     def get_all_service_useages(self):
         pass
+
+
+
