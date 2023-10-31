@@ -39,3 +39,9 @@ class DoctorAdmin(admin.ModelAdmin):
                 'specialization', 'is_superuser', 'groups', 'user_permissions')
             
 admin.site.register(Doctor, DoctorAdmin)
+
+
+class AvailableTimeAdmin(admin.ModelAdmin):
+    list_display = ['id', 'stuff', 'week_day', 'from_time', 'to']
+    list_display_links = ['stuff', 'week_day']
+    list_editable = ['week_day', 'from_time', 'to']

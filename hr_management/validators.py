@@ -1,13 +1,5 @@
 from django.core.exceptions import ValidationError
-
-class InsuranceFieldsValidator:
-    def __call__(self, value):
-        insurance_provider = insurance_provider
-        insurance_policy_number = insurance_policy_number
-
-        if bool(insurance_provider) != bool(insurance_policy_number):
-            raise ValidationError("Either both 'insurance_provider' and 'insurance_policy_number' must be provided or both should be empty.")
-
+from datetime import datetime, timedelta
 
 def validate_insurance_fields(insurance_provider, insurance_policy_number):
     # print(value)
@@ -24,3 +16,15 @@ def validate_insurance_fields(insurance_provider, insurance_policy_number):
         raise ValidationError("Either both 'insurance_provider' and 'insurance_policy_number' \
             must be provided or both should be empty.")
     
+
+def validate_available_time(from_time, to):
+    """Checks available times. If 'from_time' 
+        field lower then 'to' field works good 
+        else raises Validation error"""
+    if timedelta(2) <= (to-from_time):
+        raise ValidationError("Available time should be more then 2 hours")
+
+
+def validate_stuff_is_vorking(value):
+    if not value.working:
+        ValidationError("This stuff is not working. Choose another stuff or change working status to True")

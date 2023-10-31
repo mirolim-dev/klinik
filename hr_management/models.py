@@ -4,7 +4,10 @@ import random
 import string
 
 # from local
-from .validators import validate_insurance_fields
+from .validators import (
+    validate_insurance_fields, 
+    validate_available_time,
+     validate_stuff_is_vorking)
 from .specialization_models import StuffSpecialization, DoctorSpecialization
 from datetime import datetime, timedelta
 from .utils import generate_barcode
@@ -110,3 +113,9 @@ class AvailableTime(models.Model):
     __default_time = datetime.now() + timedelta(8) #private fields will not be migrated and it 
                                                    #is not accessable from outside of the model
     to = models.TimeField(default=__default_time.time())
+
+    def clean(self) -> None:
+        super().clean()
+        validate_available_time(self.from_time, self.to)
+        
+
