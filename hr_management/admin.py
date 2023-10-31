@@ -43,5 +43,6 @@ admin.site.register(Doctor, DoctorAdmin)
 
 class AvailableTimeAdmin(admin.ModelAdmin):
     list_display = ['id', 'stuff', 'week_day', 'from_time', 'to']
-    list_display_links = ['stuff', 'week_day']
+    list_display_links = ['stuff']
     list_editable = ['week_day', 'from_time', 'to']
+admin.site.register(AvailableTime, AvailableTimeAdmin)
