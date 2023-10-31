@@ -46,3 +46,21 @@ class AvailableTimeAdmin(admin.ModelAdmin):
     list_display_links = ['stuff']
     list_editable = ['week_day', 'from_time', 'to']
 admin.site.register(AvailableTime, AvailableTimeAdmin)
+
+
+class StuffSpecializationAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name', 'display_image', 'created_at']
+    list_display_links = ['name']
+    def display_image(self, obj):
+        return obj.image.url if obj.image else None
+    display_image.short_description = 'Image'
+admin.site.register(StuffSpecialization, StuffSpecializationAdmin)
+
+
+class DoctorSpecializationAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name', 'display_image', 'created_at']
+    list_display_links = ['name']
+    def display_image(self, obj):
+        return obj.image.url if obj.image else None
+    display_image.short_description = 'Image'
+admin.site.register(DoctorSpecialization, DoctorSpecializationAdmin)
