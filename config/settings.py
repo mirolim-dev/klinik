@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'outlook',
     'account',
+    'hr_management',
 ]
 
 MIDDLEWARE = [
