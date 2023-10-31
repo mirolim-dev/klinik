@@ -71,14 +71,14 @@ class Stuff(CustomUser):
         super().save(*args, **kwargs)
 
 class Doctor(Stuff):
-    perofession = models.ForeignKey(DoctorSpecialization, on_delete=models.DO_NOTHING)
+    profession = models.ForeignKey(DoctorSpecialization, on_delete=models.DO_NOTHING)
     POSITION_CHOICES = (
         (0, "Junior"),
         (1, "Senior"),
         (2, "Consultant"),
         (3, "Surgeon")
     )
-    postion = models.IntegerField(choices=POSITION_CHOICES, default=0)
+    position = models.IntegerField(choices=POSITION_CHOICES, default=0)
 
     def __str__(self):
         return super().__str__()
