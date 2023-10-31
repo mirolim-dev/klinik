@@ -9,7 +9,9 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from .validators import (
     validate_insurance_fields, 
     validate_available_time,
-     validate_stuff_is_vorking)
+    validate_stuff_is_vorking,
+    validate_file_size, 
+    validate_file_type)
 from .specialization_models import StuffSpecialization, DoctorSpecialization
 from datetime import datetime, timedelta
 from .utils import generate_barcode
@@ -118,13 +120,15 @@ class AvailableTime(models.Model):
 
     def clean(self) -> None:
         super().clean()
+        validate_stuff_is_vorking(self.stuff)
         validate_available_time(self.from_time, self.to)
         
 
 class Achievement(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
-    _file = models.FileField(upload_to='achievements/docs/')
+    _file = models.FileField(upload_to='achievements/docs/', 
+                             validators=[validate_file_type, validate_file_size])
     description = RichTextUploadingField()
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
