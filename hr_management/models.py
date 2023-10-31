@@ -3,6 +3,8 @@ from account.models import CustomUser
 import random
 import string
 
+# from packages
+from ckeditor_uploader.fields import RichTextUploadingField
 # from local
 from .validators import (
     validate_insurance_fields, 
@@ -120,4 +122,13 @@ class AvailableTime(models.Model):
         
 
 class Achievement(models.Model):
-    pass
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    _file = models.FileField(upload_to='achievements/docs/')
+    description = RichTextUploadingField()
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return self.name
+
+    

@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # from local
-from .models import Patient, Stuff, Doctor, AvailableTime
+from .models import Patient, Stuff, Doctor, AvailableTime, Achievement
 from .specialization_models import StuffSpecialization, DoctorSpecialization
 
 
@@ -64,3 +64,9 @@ class DoctorSpecializationAdmin(admin.ModelAdmin):
         return obj.image.url if obj.image else None
     display_image.short_description = 'Image'
 admin.site.register(DoctorSpecialization, DoctorSpecializationAdmin)
+
+
+class AchievementAdmin(admin.ModelAdmin):
+    list_display = ['id', 'doctor', 'name', '_file', 'description', 'uploaded_at']
+    list_display_links = ['name']
+admin.site.register(Achievement, AchievementAdmin)
