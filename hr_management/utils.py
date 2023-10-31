@@ -20,9 +20,3 @@ def generate_barcode(barcode_data, directory_name):
     ean_barcode.save(full_filepath)
     return full_filepath
 
-
-# def generate_barcode_data():
-#     max_digits = 13
-#     data = ''.join((string.digits) for _ in range(max_digits))
-#     return data
-
