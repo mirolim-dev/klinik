@@ -26,6 +26,10 @@ class CustomUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
+    class Meta:
+        verbose_name = 'User'
+        # abstract = True
+
     username = models.CharField(max_length=255, unique=True)
     first_name = models.CharField(max_length=25, blank=True)
     last_name = models.CharField(max_length=255, blank=True)
