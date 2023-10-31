@@ -38,11 +38,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # my apps
     'outlook',
     'account',
     'hr_management',
     'departments',
+
+    # packages
+    'ckeditor',
+    'ckeditor_uploader',
 ]
+
+CKEDITOR_UPLOAD_PATH = "media/uploads/"
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

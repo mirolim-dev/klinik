@@ -119,3 +119,5 @@ class AvailableTime(models.Model):
         validate_available_time(self.from_time, self.to)
         
 
+class Achievement(models.Model):
+    pass
