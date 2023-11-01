@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'account',
     'hr_management',
     'departments',
+    'events',
 
     # packages
     'ckeditor',

@@ -25,4 +25,5 @@ urlpatterns = [
     path('', include('outlook.urls')),
     path('hr/', include('hr_management.urls')),
     path('departments/', include('departments.urls')),
+    path('events/', include('events.urls')),
 ]
