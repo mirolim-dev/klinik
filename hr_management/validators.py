@@ -25,7 +25,7 @@ def validate_available_time(from_time, to):
         raise ValidationError("Available time should be more then 2 hours")
 
 
-def validate_stuff_is_vorking(value):
+def validate_staff_is_vorking(value):
     if not value.working:
         ValidationError("This stuff is not working. Choose another stuff or change working status to True")
 

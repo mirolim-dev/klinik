@@ -7,18 +7,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('hr_management', '0004_alter_availabletime_from_time_alter_availabletime_to'),
+        ('hr_management', '0003_alter_availabletime_from_time_alter_availabletime_to'),
     ]
 
     operations = [
         migrations.AlterField(
             model_name='availabletime',
             name='from_time',
-            field=models.TimeField(default=datetime.time(20, 14, 49, 33779)),
+            field=models.TimeField(default=datetime.time(20, 14, 33, 992498)),
         ),
         migrations.AlterField(
             model_name='availabletime',
             name='to',
-            field=models.TimeField(default=datetime.time(20, 14, 49, 33779)),
+            field=models.TimeField(default=datetime.time(20, 14, 33, 992498)),
         ),
     ]

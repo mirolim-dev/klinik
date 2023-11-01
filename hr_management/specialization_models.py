@@ -1,9 +1,9 @@
 from  django.db import models
 
 
-class StuffSpecialization(models.Model):
+class StaffSpecialization(models.Model):
     name = models.CharField(max_length=255, unique=True)
-    image = models.ImageField(upload_to='specializations/stuffs/image/', blank=True)
+    image = models.ImageField(upload_to='specializations/staffs/image/', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

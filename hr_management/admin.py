@@ -1,8 +1,8 @@
 from django.contrib import admin
 
 # from local
-from .models import Patient, Stuff, Doctor, AvailableTime, Achievement
-from .specialization_models import StuffSpecialization, DoctorSpecialization
+from .models import Patient, Staff, Doctor, AvailableTime, Achievement
+from .specialization_models import StaffSpecialization, DoctorSpecialization
 
 
 # Register your models here.
@@ -16,7 +16,7 @@ class PatientAdmin(admin.ModelAdmin):
 admin.site.register(Patient, PatientAdmin)
 
 
-class StuffAdmin(admin.ModelAdmin):
+class StaffAdmin(admin.ModelAdmin):
     list_display = ['id', 'first_name', 'last_name', 'gender', 
                     'phone', 'address', 'specialization',
                     'department', 'working', 'salary', 
@@ -25,7 +25,7 @@ class StuffAdmin(admin.ModelAdmin):
     list_editable = ['phone', 'address']
     exclude = ('username', 'password', 'last_login', 'is_active',  
                'is_superuser', 'groups', 'user_permissions')
-admin.site.register(Stuff, StuffAdmin)
+admin.site.register(Staff, StaffAdmin)
 
 
 class DoctorAdmin(admin.ModelAdmin):
@@ -42,19 +42,19 @@ admin.site.register(Doctor, DoctorAdmin)
 
 
 class AvailableTimeAdmin(admin.ModelAdmin):
-    list_display = ['id', 'stuff', 'week_day', 'from_time', 'to']
-    list_display_links = ['stuff']
+    list_display = ['id', 'staff', 'week_day', 'from_time', 'to']
+    list_display_links = ['staff']
     list_editable = ['week_day', 'from_time', 'to']
 admin.site.register(AvailableTime, AvailableTimeAdmin)
 
 
-class StuffSpecializationAdmin(admin.ModelAdmin):
+class StaffSpecializationAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'display_image', 'created_at']
     list_display_links = ['name']
     def display_image(self, obj):
         return obj.image.url if obj.image else None
     display_image.short_description = 'Image'
-admin.site.register(StuffSpecialization, StuffSpecializationAdmin)
+admin.site.register(StaffSpecialization, StaffSpecializationAdmin)
 
 
 class DoctorSpecializationAdmin(admin.ModelAdmin):

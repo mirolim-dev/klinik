@@ -9,10 +9,10 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from .validators import (
     validate_insurance_fields, 
     validate_available_time,
-    validate_stuff_is_vorking,
+    validate_staff_is_vorking,
     validate_file_size, 
     validate_file_type)
-from .specialization_models import StuffSpecialization, DoctorSpecialization
+from .specialization_models import StaffSpecialization, DoctorSpecialization
 from datetime import datetime, timedelta
 from .utils import generate_barcode
 
@@ -48,10 +48,10 @@ class Patient(CustomUser):
         pass
 
 
-class Stuff(CustomUser):
-    specialization = models.ForeignKey(StuffSpecialization, on_delete=models.DO_NOTHING)
+class Staff(CustomUser):
+    specialization = models.ForeignKey(StaffSpecialization, on_delete=models.DO_NOTHING)
     department = models.ForeignKey(Department, on_delete=models.DO_NOTHING)
-    image = models.ImageField(upload_to="stuffs/images/", blank=True)
+    image = models.ImageField(upload_to="staffs/images/", blank=True)
     working = models.BooleanField(default=True)
     salary = models.DecimalField(max_digits=25, decimal_places=2, default=0.00)
     CURRENCY_CHOICES = (
@@ -73,17 +73,18 @@ class Stuff(CustomUser):
             barcode_file_path shoul be created automatically"""
         if not self.pk:#checking is object creating or updating
             self.barcode_data = ''.join((string.digits) for _ in range(13))
-            self.barcode_file_path = f"media/stuffs/barcodes/{self.first_name}_{self.last_name}.png"
+            self.barcode_file_path = f"media/staffs/barcodes/{self.first_name}_{self.last_name}.png"
             generate_barcode(self.barcode_data, self.barcode_file_path)
         super().save(*args, **kwargs)
 
-class Doctor(Stuff):
+class Doctor(Staff):
     profession = models.ForeignKey(DoctorSpecialization, on_delete=models.DO_NOTHING)
     POSITION_CHOICES = (
         (0, "Junior"),
         (1, "Senior"),
         (2, "Consultant"),
-        (3, "Surgeon")
+        (3, "Surgeon"),
+        (4, "Head Doctor"),
     )
     position = models.IntegerField(choices=POSITION_CHOICES, default=0)
 
@@ -91,18 +92,18 @@ class Doctor(Stuff):
         return super().__str__()
 
     def save(self, *args, **kwargs):
-        """method is Handling because of stuff's specialiation should be set 
+        """method is Handling because of staff's specialiation should be set 
             automatically when Doctor has been created"""
         if not self.pk:
-            stuff_specialization = StuffSpecialization.objects.get(name='Doctor')
-            if not bool(stuff_specialization):
-                stuff_specialization = StuffSpecialization.objects.create(name="Doctor")
-            self.specialization = stuff_specialization
+            staff_specialization = StaffSpecialization.objects.get(name='Doctor')
+            if not bool(staff_specialization):
+                staff_specialization = StaffSpecialization.objects.create(name="Doctor")
+            self.specialization = staff_specialization
         super().save(*args, **kwargs)
 
 
 class AvailableTime(models.Model):
-    stuff = models.ForeignKey(Stuff, on_delete=models.CASCADE)
+    staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
     WEEK_DAYS = (
         (1, "Monday"),
         (2, "Tuesday"),
@@ -120,7 +121,7 @@ class AvailableTime(models.Model):
 
     def clean(self) -> None:
         super().clean()
-        validate_stuff_is_vorking(self.stuff)
+        validate_staff_is_vorking(self.staff)
         validate_available_time(self.from_time, self.to)
         
 
