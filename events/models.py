@@ -15,6 +15,9 @@ class Curing(models.Model):
     def __str__(self) -> str:
         return self.name
 
+    def get_all_curing_regimens(self):
+        return self.curingregimen_set.select_related('curing')
+
 class CuringRegimen(models.Model):
     curing = models.ForeignKey(Curing, on_delete=models.CASCADE)
     drug = models.CharField(max_length=255)
