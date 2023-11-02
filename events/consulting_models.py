@@ -37,7 +37,7 @@ class Consulting(models.Model):
 
 class ConsultingPatientUsage(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.DO_NOTHING)
-    required_diagnoses = models.ManyToManyField(Diagnoz, blank=True, validators=[validate_diagnoz])
+    required_diagnoses = models.ManyToManyField(Diagnoz, blank=True)
     consulting = models.ForeignKey(Consulting, on_delete=models.DO_NOTHING, validators=[validate_consulting])
     STATUS_CHOICES = (
         (0, "Cancelled"),
