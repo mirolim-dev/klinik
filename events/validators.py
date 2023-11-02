@@ -8,8 +8,15 @@ def validate_consultant(value):
             f"Postion of your consultant doctor is {value.position}\
                 It should be one of Consultant or Senior"
         )
-    if not value.consultant.staff.working:
+    if not value.staff.working:
         raise ValidationError(
             f"Consultant is not working\
             Consultan should be working(It means consultant shoul be active)"
         )
+
+def validate_consulting(value):
+    # (0, "Inactive"),
+    # (1, 'Active'),
+    if value.status == 0:
+        return ValidationError(f"Consulting should be active to choose")
+    

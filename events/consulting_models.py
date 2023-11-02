@@ -5,7 +5,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from hr_management.models import Doctor, Patient
 from .models import Diagnoz
 from departments.models import Room
-from .validators import validate_consultant
+from .validators import validate_consultant, validate_consulting
 
 
 # models here
@@ -34,8 +34,8 @@ class Consulting(models.Model):
 
 class ConsultingPatientUsage(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.DO_NOTHING)
-    required_diagnoses = models.ManyToManyField(Diagnoz)
-    consulting = models.ForeignKey(Consulting, on_delete=models.DO_NOTHING)
+    required_diagnoses = models.ManyToManyField(Diagnoz, blank=True)
+    consulting = models.ForeignKey(Consulting, on_delete=models.DO_NOTHING, validators=[validate_consulting])
     STATUS_CHOICES = (
         (0, "Cancelled"),
         (1, "Waiting payment"),
