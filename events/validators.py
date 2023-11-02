@@ -34,3 +34,24 @@ def validate_consulting_patient_usage_dpu(value):
     # (3, "Waiting diagnoses"),
     if value.status != 3:
         raise ValidationError("Consulting Patient usage status should be Waiting diagnoses")
+
+def validate_consulting_patient_usage_status(value, status:list):
+    """
+    STATUS_CHOICES = (
+        (0, "Cancelled"),
+        (1, "Waiting payment"),
+        (2, "In que"),
+        (3, "Waiting diagnoses"),
+        (4, "Done"),
+    )
+    """
+    STATUS_CHOICES = (
+        (0, "Cancelled"),
+        (1, "Waiting payment"),
+        (2, "In que"),
+        (3, "Waiting diagnoses"),
+        (4, "Done"),
+    )
+    if value not in status:
+        raise ValidationError(f"consulting patient usage should be one fo these: {[STATUS_CHOICES[x] for x in status]}")
+        

@@ -7,7 +7,8 @@ from .models import Diagnoz
 from departments.models import Room
 from .validators import (
     validate_consultant, validate_consulting,
-    validate_diagnoz, validate_consulting_patient_usage_dpu
+    validate_diagnoz, validate_consulting_patient_usage_dpu,
+    validate_consulting_patient_usage_status,
     )
 
 
@@ -92,3 +93,7 @@ class Prescription(models.Model):
 
     def __str__(self):
         return f"{self.drug} |dosage: {self.dosage}"
+
+    def clean(self) -> None:
+        super().clean()
+        validate_consulting_patient_usage_status(3)
