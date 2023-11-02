@@ -5,10 +5,13 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from hr_management.models import Doctor, Patient
 from .models import Diagnoz
 from departments.models import Room
+from .validators import validate_consultant
 
+
+# models here
 class Consulting(models.Model):
     name = models.CharField(max_length=150, unique=True)
-    consultant = models.OneToOneField(Doctor, on_delete=models.CASCADE) #validation required (only consultants or seniors can be choosen)
+    consultant = models.OneToOneField(Doctor, on_delete=models.CASCADE, validators=[validate_consultant]) #validation required (only consultants or seniors can be choosen)
     price = models.DecimalField(max_digits=25, decimal_places=2, default=0.00)
     room = models.OneToOneField(Room, on_delete=models.DO_NOTHING)
     STATUS_CHOICES = (
