@@ -18,10 +18,10 @@ def validate_consulting(value):
     # (0, "Inactive"),
     # (1, 'Active'),
     if value.status == 0:
-        return ValidationError(f"Consulting should be active to choose")
+        raise ValidationError(f"Consulting should be active to choose")
 
 def validate_diagnoz(value):
     # (0, "Inactive"),
     # (1, "Active"),
     if value.status == 0:
-        ValidationError("Diagnoz status should be active to choose")
+        raise ValidationError("Diagnoz status should be active to choose")

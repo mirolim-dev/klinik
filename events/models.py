@@ -5,6 +5,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 # from local
 from departments.models import Department, Room
 from hr_management.models import Staff, Patient
+from hr_management.validators import validate_staff_is_vorking
 from .validators import validate_diagnoz
 # Create your models here.
 
@@ -35,7 +36,8 @@ class CuringRegimen(models.Model):
 class Diagnoz(models.Model):
     name = models.CharField(max_length=255, null=True, unique=True)
     price = models.DecimalField(max_digits=25, decimal_places=2, default=0.00)
-    responsible_person = models.ForeignKey(Staff, on_delete=models.CASCADE, null=True)
+    responsible_person = models.ForeignKey(Staff, on_delete=models.CASCADE, null=True,
+                validators=[validate_staff_is_vorking])
     room = models.OneToOneField(Room, on_delete=models.CASCADE, null=True)
     STATUS_CHOICES = (
         (0, "Inactive"),
