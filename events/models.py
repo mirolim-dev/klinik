@@ -40,9 +40,12 @@ class Diagnoz(models.Model):
 
     def __str__(self) -> str:
         return self.name
+
+    class Meta:
+        verbose_name_plural = 'Diagnoses'
     
 
-class DiagnoseProductUsage(models.Model):
+class DiagnozProductUsage(models.Model):
     diagnoz = models.ForeignKey(Diagnoz, on_delete=models.CASCADE)
     # product = models.ForeignKey(Product, on_delete=models.CASCADE) #it comes from warehouse
     amount = models.DecimalField(max_digits=25, decimal_places=2, default=0.00)
@@ -57,7 +60,7 @@ class DiagnoseProductUsage(models.Model):
         return f"{self.amount} {self.measure}"
 
 
-class DiagnosePatientUsage(models.Model):
+class DiagnozPatientUsage(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     diagnoz = models.ForeignKey(Diagnoz, on_delete=models.CASCADE)
     # consulting_patient_usage = models.ForeignKey(ConsultingPatientUsage, on_delete=models.CASCADE, null=True)
