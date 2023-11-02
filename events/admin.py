@@ -3,7 +3,10 @@ from .models import (
         Curing, CuringRegimen, 
         DiagnozProductUsage, Diagnoz,
         )
-from .consulting_models import DiagnozPatientUsage
+from .consulting_models import (
+    DiagnozPatientUsage, Consulting,
+    ConsultingPatientUsage, Prescription
+    )
 
 # Register your models here.
 class CuringAdmin(admin.ModelAdmin):
@@ -40,3 +43,7 @@ class DiagnozPatientUsageAdmin(admin.ModelAdmin):
     list_filter = ['status']
     list_editable = ['status']
 admin.site.register(DiagnozPatientUsage, DiagnozPatientUsageAdmin)
+
+
+class ConsultingAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name', 'consultant', 'price', 'room', 'created_at']

@@ -11,6 +11,11 @@ class Consulting(models.Model):
     consultant = models.OneToOneField(Doctor, on_delete=models.CASCADE) #validation required (only consultants or seniors can be choosen)
     price = models.DecimalField(max_digits=25, decimal_places=2, default=0.00)
     room = models.OneToOneField(Room, on_delete=models.DO_NOTHING)
+    STATUS_CHOICES = (
+        (0, "Inactive"),
+        (1, 'Active'),
+    )
+    status = models.IntegerField(choices=STATUS_CHOICES, default=1)
     description = RichTextUploadingField(default="type description in here")
     created_at = models.DateTimeField(auto_now_add=True)
 
