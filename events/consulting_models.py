@@ -7,7 +7,7 @@ from .models import Diagnoz
 from departments.models import Room
 from .validators import (
     validate_consultant, validate_consulting,
-    validate_diagnoz,
+    validate_diagnoz, validate_consulting_patient_usage_dpu
     )
 
 
@@ -68,7 +68,8 @@ class ConsultingPatientUsage(models.Model):
 class DiagnozPatientUsage(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     diagnoz = models.ForeignKey(Diagnoz, on_delete=models.CASCADE, validators=[validate_diagnoz])
-    consulting_patient_usage = models.ForeignKey(ConsultingPatientUsage, on_delete=models.CASCADE, blank=True, null=True)
+    consulting_patient_usage = models.ForeignKey(ConsultingPatientUsage, on_delete=models.CASCADE, 
+                                                blank=True, null=True, validators=[validate_consulting_patient_usage_dpu])
     STATUS_CHOICES = (
         (1, "Waiting payment"),
         (2, "In que"),
