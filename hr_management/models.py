@@ -70,7 +70,7 @@ class Staff(CustomUser):
 
     def save(self, *args, **kwargs):
         """Method is being handled because of barcode_data and 
-            barcode_file_path shoul be created automatically"""
+            barcode_file_path shoul be created automatically""" 
         if not self.pk:#checking is object creating or updating
             self.barcode_data = ''.join((string.digits) for _ in range(13))
             self.barcode_file_path = f"media/staffs/barcodes/{self.first_name}_{self.last_name}.png"

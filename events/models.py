@@ -60,20 +60,5 @@ class DiagnozProductUsage(models.Model):
         return f"{self.amount} {self.measure}"
 
 
-class DiagnozPatientUsage(models.Model):
-    patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
-    diagnoz = models.ForeignKey(Diagnoz, on_delete=models.CASCADE)
-    # consulting_patient_usage = models.ForeignKey(ConsultingPatientUsage, on_delete=models.CASCADE, null=True)
-    STATUS_CHOICES = (
-        (1, "Waiting payment"),
-        (2, "In que"),
-        (3, "Done"),
-    )
-    status = models.IntegerField(choices=STATUS_CHOICES, default=1)
-    result = RichTextUploadingField(default="Nothing in here")
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
-    def __str__(self) -> str:
-        return f"{self.patient.__str__()} | {self.diagnoz.name} | {self.status}"
     

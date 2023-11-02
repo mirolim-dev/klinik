@@ -1,9 +1,9 @@
 from django.contrib import admin
 from .models import (
         Curing, CuringRegimen, 
-        DiagnozPatientUsage,
         DiagnozProductUsage, Diagnoz,
         )
+from .consulting_models import DiagnozPatientUsage
 
 # Register your models here.
 class CuringAdmin(admin.ModelAdmin):
