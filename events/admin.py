@@ -46,4 +46,22 @@ admin.site.register(DiagnozPatientUsage, DiagnozPatientUsageAdmin)
 
 
 class ConsultingAdmin(admin.ModelAdmin):
-    list_display = ['id', 'name', 'consultant', 'price', 'room', 'created_at']
+    list_display = ['id', 'name', 'consultant', 'price', 'room', 'status', 'created_at']
+    list_filter = ['status']
+    list_editable = ['price', 'status']
+    search_fields = ['name', 'id', 'consultant__firt_name', 'consultant__last_name', 'price', 'room__name']
+admin.site.register(Consulting, ConsultingAdmin)
+
+
+class PrescriptionAdmin(admin.ModelAdmin):
+    list_display = ['id', 'consulting_patient_usage', 'drug', 'dosage', 'times_in_a_day']
+    list_editable = ['drug', 'dosage', 'times_in_a_day']
+    search_fields = ['id', 'consulting_patient_usage', 'drug', 'dosage', 'times_in_a_day']
+admin.site.register(Prescription, PrescriptionAdmin)
+
+
+class ConsultingPatientUsageAdmin(admin.ModelAdmin):
+    list_display = ['id', 'patient', 'consulting', 'status', 'created_at', 'updated_at']
+    list_filter = ['status']
+    list_editable = ['status']
+admin.site.register(ConsultingPatientUsage, ConsultingPatientUsageAdmin)
