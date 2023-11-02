@@ -36,6 +36,11 @@ class Diagnoz(models.Model):
     price = models.DecimalField(max_digits=25, decimal_places=2, default=0.00)
     responsible_person = models.ForeignKey(Staff, on_delete=models.CASCADE, null=True)
     room = models.OneToOneField(Room, on_delete=models.CASCADE, null=True)
+    STATUS_CHOICES = (
+        (0, "Inactive"),
+        (1, "Active"),
+    )
+    status = models.IntegerField(choices=STATUS_CHOICES, default=1)
     description = models.TextField(blank=True)
 
     def __str__(self) -> str:
