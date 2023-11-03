@@ -3,6 +3,7 @@ from django.contrib import admin
 # from local
 from .models import Patient, Staff, Doctor, AvailableTime, Achievement
 from .specialization_models import StaffSpecialization, DoctorSpecialization
+from .attandance_model import Attandance
 
 
 # Register your models here.
@@ -70,3 +71,10 @@ class AchievementAdmin(admin.ModelAdmin):
     list_display = ['id', 'doctor', 'name', '_file', 'description', 'uploaded_at']
     list_display_links = ['name']
 admin.site.register(Achievement, AchievementAdmin)
+
+
+class AttandanceAdmin(admin.ModelAdmin):
+    list_display = ['id', 'staff', 'arrived_at', 'left_at', 'in_available_day']
+    search_fields = ['staff__first_name', 'staff__last_name', 'arrived_at', 'left_at']
+    list_filter = ['in_available_day']
+admin.site.register(Attandance, AttandanceAdmin)
