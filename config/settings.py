@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'hr_management',
     'departments',
     'events',
+    'payments',
 
     # packages
     'ckeditor',
