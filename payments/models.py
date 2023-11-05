@@ -23,3 +23,19 @@ class Invoice(models.Model):
 
     def __str__(self):
         return f"{self.patient}|{self.total_amount}"
+
+
+class Payment(models.Model):
+    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
+    PAYMENT_TYPE_CHOICES = (
+        (1, 'Cash'),
+        (2, 'Plastic Card'),
+        (3, 'Insurance'),
+    )
+    payment_type = models.IntegerField(choices=PAYMENT_TYPE_CHOICES, default=1)
+    amount = models.DecimalField(max_digits=25, decimal_places=2, default=1.00)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f"{self.invoice.patient} | {self.amount} | {self.payment_type}"
+
