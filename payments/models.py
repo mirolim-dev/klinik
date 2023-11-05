@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.core.exceptions import ValidationError
 # from local
 from hr_management.models import Patient
 
@@ -18,11 +18,21 @@ class Invoice(models.Model):
     status = models.IntegerField(choices=STATUS_CHOICES, default=1)
     description = models.TextField()
     craeted_at = models.DateTimeField(auto_now_add=True)
-    available_till = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField(auto_now=True)
     available_till = models.DateTimeField()
 
     def __str__(self):
         return f"{self.patient}|{self.total_amount}"
+    
+    def clean(self):
+        super().clean()
+        if self.total_amount <= 0:
+            raise ValidationError("total amount should be greater then 0")
+    
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.residual_amount = self.total_amount
+        super().save(*args, **kwargs)
 
 
 class Payment(models.Model):
