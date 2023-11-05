@@ -34,6 +34,9 @@ class Invoice(models.Model):
             self.residual_amount = self.total_amount
         super().save(*args, **kwargs)
 
+    def get_all_payments(self):
+        return self.payments_set.select_related('invoice')
+
 
 class Payment(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
