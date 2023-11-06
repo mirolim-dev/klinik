@@ -43,6 +43,7 @@ class Invoice(models.Model):
     def get_string_data_of_status(self)->str:
         return self.STATUS_CHOICES[[self.status-1][1]]
 
+
 class Payment(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
     PAYMENT_TYPE_CHOICES = (
@@ -67,6 +68,22 @@ class Payment(models.Model):
     
     def clean(self):
         super().clean()
-        if self.amount <= 0:
-            raise ValidationError(f"amount shoud be greater then 0")
+        if self.invoice.residual_mount < self.amount <= 0:
+            raise ValidationError(f"amount shoud be greater then 0 and less then invoice's residual_amount")
+
+@receiver(post_save, sender=Payment)
+def update_invoice_status(sender, instance, **kwargs):
+    invoice = instance.invoice
+    total_payments = invoice.payment_set.aggregate(total_amount=models.Sum('amount'))['total_amount']
+    if total_payments is None:
+        total_payments = 0
+
+    if total_payments == invoice.total_amount:
+        invoice.status = 3  # Set status to 'Done' when total payments match the total amount
+    elif total_payments > 0:
+        invoice.status = 2  # Set status to 'Partly paid' when there are some payments
+
+    invoice.residual_amount -= instance.amount
+    invoice.save()
+
 
