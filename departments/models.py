@@ -12,6 +12,9 @@ class Department(models.Model):
     def __str__(self):
         return self.name
 
+    def get_all_rooms(self):
+        return self.room_set.select_related('department')
+
 
 class Room(models.Model):
     name = models.CharField(max_length=255, unique=True, default="Room 5-45A")
