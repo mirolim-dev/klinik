@@ -2,7 +2,7 @@ from django.db import models
 from account.models import CustomUser
 import random
 import string
-
+from datetime import datetime, timedelta
 # from packages
 from ckeditor_uploader.fields import RichTextUploadingField
 # from local
@@ -13,10 +13,9 @@ from .validators import (
     validate_file_size, 
     validate_file_type)
 from .specialization_models import StaffSpecialization, DoctorSpecialization
-from datetime import datetime, timedelta
 from .utils import generate_barcode
-
 from departments.models import Department
+
 # Create your models here.
 class Patient(CustomUser):
     date_of_birth = models.DateField()
@@ -44,7 +43,7 @@ class Patient(CustomUser):
         random_pasword = ''.join(random.choice(chars) for _ in range(password_length)) 
         self.password = random_pasword
 
-    def get_all_service_useages(self):
+    def get_all_service_usages(self):
         pass
 
 
