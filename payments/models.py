@@ -20,7 +20,7 @@ class Invoice(models.Model):
     )
     status = models.IntegerField(choices=STATUS_CHOICES, default=1)
     description = models.TextField()
-    craeted_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     available_till = models.DateTimeField()
 
