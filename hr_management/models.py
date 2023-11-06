@@ -104,6 +104,9 @@ class Doctor(Staff):
             self.specialization = staff_specialization
         super().save(*args, **kwargs)
 
+    def get_all_achievements(self):
+        return self.achievement_set.select_related('doctor')
+
 
 class AvailableTime(models.Model):
     staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
