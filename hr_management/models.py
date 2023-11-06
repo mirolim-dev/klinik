@@ -77,6 +77,9 @@ class Staff(CustomUser):
             generate_barcode(self.barcode_data, self.barcode_file_path)
         super().save(*args, **kwargs)
 
+    def get_all_available_time(self):
+        return self.availabletime_set.select_related('staff')
+
 class Doctor(Staff):
     profession = models.ForeignKey(DoctorSpecialization, on_delete=models.DO_NOTHING)
     POSITION_CHOICES = (
