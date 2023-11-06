@@ -32,6 +32,7 @@ class RoomStuff(models.Model):
     def __str__(self) -> str:
         return self.name
 
+
 class Bed(models.Model):
     room = models.OneToOneField(Room, on_delete=models.CASCADE)
     department = models.ForeignKey(Department, on_delete=models.DO_NOTHING)
@@ -45,8 +46,15 @@ class Bed(models.Model):
 
     class Meta:
         ordering = ['status']
+
     def __str__(self):
         return f"{self.room.name} | {self.status}"
+
+    def get_number_of_available_places(self):
+        return self.admission_set.prefetch_related(
+            'department', 'patient', 'bed', 'diagnoses', 'meals', 'curings'
+            ).filter(status__in=(1, 2)).count()
+
 
 
 
