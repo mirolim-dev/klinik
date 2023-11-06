@@ -1,5 +1,8 @@
 from django.db import models
 from django.core.exceptions import ValidationError
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 # from local
 from hr_management.models import Patient
 
@@ -37,6 +40,8 @@ class Invoice(models.Model):
     def get_all_payments(self):
         return self.payments_set.select_related('invoice')
 
+    def get_string_data_of_status(self)->str:
+        return self.STATUS_CHOICES[[self.status-1][1]]
 
 class Payment(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
@@ -50,5 +55,18 @@ class Payment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
-        return f"{self.invoice.patient} | {self.amount} | {self.payment_type}"
+        return f"{self.invoice.patient} | {self.amount} | {self.get_string_data_of_payment_type()}"
+    
+    def get_string_data_of_payment_type(self)->str:
+        return self.PAYMENT_TYPE_CHOICES[[self.payment_type-1][1]]
+
+    def save(self, *args, **kwargs):
+        if self.invoice.status > 2:
+            raise ValidationError(f"You can't do payment for this Invoice. Because it is \
+                {self.invoice.get_string_data_of_status()}")
+    
+    def clean(self):
+        super().clean()
+        if self.amount <= 0:
+            raise ValidationError(f"amount shoud be greater then 0")
 
