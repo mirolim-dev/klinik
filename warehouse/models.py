@@ -1,5 +1,8 @@
 from django.db import models
 from django.db.models import F, Sum
+
+# from local
+from hr_management.models import Staff
 # Create your models here.
 class Supplier(models.Model):
     name = models.CharField(max_length=255)
@@ -90,9 +93,30 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=25, decimal_places=2)
     measure = models.IntegerField(choices=MeasureChoices.CHOICES, default=2)
+    usable_till = models.DateField()
 
     def __str__(self):
         return f"{self.product.name} | {self.amoun} {self.measure}"
 
     
-# class ProductUsage(models.Model):
+class ProductsCollection(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
+    amount = models.DecimalField(max_digits=25, decimal_places=2)
+    measure = models.IntegerField(choices=MeasureChoices.CHOICES, default=1)
+    usable_till = models.DateField()
+    barcode_data = models.CharField(max_length=11)
+    barcode_file = models.ImageField(upload_to='products_collection/barcodes/')
+
+    def __str__(self):
+        return f"{self.product.name} | {self.barcode_data}"
+
+
+class ProductUsage(models.Model):
+    product_collections = models.ManyToManyField(ProductsCollection)
+    staff = models.ForeignKey(Staff, on_delete=models.SET_NULL, null=True)
+    description = models.TextField()
+    taken_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.product_collections.count()} | {self.staff.get_full_name()}"
+
