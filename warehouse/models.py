@@ -3,6 +3,7 @@ from django.db.models import F, Sum
 
 # from local
 from hr_management.models import Staff
+from validators import validate_measure_type
 # Create your models here.
 class Supplier(models.Model):
     name = models.CharField(max_length=255)
@@ -32,6 +33,8 @@ class ItemCategory(models.Model):
     
 
 class MeasureChoices:
+    
+
     MILLIGRAMM = 0
     GRAMM = 1
     KILOGRAMM = 2
@@ -39,6 +42,12 @@ class MeasureChoices:
     MILLILITER = 4
     LITER = 5
     PEACE = 6
+
+    measure_types = {
+        'weight': [MILLIGRAMM, GRAMM, KILOGRAMM, TON],
+        'volume': [MILLILITER, LITER],
+        'peace': [PEACE],
+    }
 
     CHOICES = (
         (MILLIGRAMM, 'MilliGramm'),
@@ -58,10 +67,15 @@ class Product(models.Model):
     measure = models.IntegerField(choices=MeasureChoices.CHOICES, default=2)
     description = models.TextField(blank=True)
     location = models.TextField(blank=True)
-
+    
     def __str__(self)->str:
         return self.name
 
+    def get_measure_type(self):
+        for measure_type, measures in MeasureChoices.measure_types.items():
+            if self.measure in measures:
+                return measure_type
+        return None
 
 class Order(models.Model):
     supplier = models.ForeignKey(Supplier, on_delete=models.DO_NOTHING)
@@ -97,6 +111,10 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.product.name} | {self.amoun} {self.measure}"
+    
+    def clean(self) -> None:
+        super().clean()
+        validate_measure_type(self.product, self.measure)
 
     
 class ProductsCollection(models.Model):
