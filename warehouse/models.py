@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.db.models import F, Sum
 # Create your models here.
 class Supplier(models.Model):
     name = models.CharField(max_length=255)
@@ -59,3 +59,30 @@ class Product(models.Model):
     def __str__(self)->str:
         return self.name
 
+
+class Order(models.Model):
+    supplier = models.ForeignKey(Supplier, on_delete=models.DO_NOTHING)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.supplier.name
+
+    def get_all_items(self):
+        return self.orderitem_set.select_related('order', 'product')
+    
+    def get_total_price(self):
+        total_price = self.orderitem_set.aggregate(
+            total=Sum(F('amount') * F('product__unit_price'))
+        )['total']
+        
+        return total_price or 0
+    
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=25, decimal_places=2)
+    measure = models.IntegerField(choices=MeasureChoices.CHOICES, default=2)
+
+    def __str__(self):
+        return f"{self.product.name} | {self.amoun} {self.measure}"
