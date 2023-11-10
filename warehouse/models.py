@@ -1,9 +1,11 @@
 from django.db import models
 from django.db.models import F, Sum
+from django.core.exceptions import ValidationError
+from datetime import datetime, timedelta
 
 # from local
 from hr_management.models import Staff
-from validators import validate_measure_type
+# from .validators import validate_measure_type
 # Create your models here.
 class Supplier(models.Model):
     name = models.CharField(max_length=255)
@@ -33,8 +35,6 @@ class ItemCategory(models.Model):
     
 
 class MeasureChoices:
-    
-
     MILLIGRAMM = 0
     GRAMM = 1
     KILOGRAMM = 2
@@ -59,6 +59,11 @@ class MeasureChoices:
         (PEACE, 'Peace'),
     )
 
+def validate_measure_type(product:object, measure:int):
+    measures = MeasureChoices.measure_types[product.get_measure_type()]
+    if measure not in measures:
+        raise ValidationError(f"measure should be one of these {measures}")
+
 class Product(models.Model):
     category = models.ForeignKey(ItemCategory, on_delete=models.CASCADE)
     name = models.CharField(max_length=150)
@@ -76,6 +81,7 @@ class Product(models.Model):
             if self.measure in measures:
                 return measure_type
         return None
+
 
 class Order(models.Model):
     supplier = models.ForeignKey(Supplier, on_delete=models.DO_NOTHING)
@@ -107,7 +113,7 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     amount = models.DecimalField(max_digits=25, decimal_places=2)
     measure = models.IntegerField(choices=MeasureChoices.CHOICES, default=2)
-    usable_till = models.DateField()
+    usable_till = models.DateField(null=True)
 
     def __str__(self):
         return f"{self.product.name} | {self.amoun} {self.measure}"
@@ -124,9 +130,14 @@ class ProductsCollection(models.Model):
     usable_till = models.DateField()
     barcode_data = models.CharField(max_length=11)
     barcode_file = models.ImageField(upload_to='products_collection/barcodes/')
+    is_exists = models.BooleanField(default=True)
 
     def __str__(self):
         return f"{self.product.name} | {self.barcode_data}"
+
+    def clean(self) -> None:
+        super().clean()
+        validate_measure_type(self.product, self.measure)
 
 
 class ProductUsage(models.Model):
