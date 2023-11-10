@@ -62,6 +62,13 @@ class Product(models.Model):
 
 class Order(models.Model):
     supplier = models.ForeignKey(Supplier, on_delete=models.DO_NOTHING)
+    STATUS_CHOICES = (
+        (1, 'Pending'),
+        (2, 'Shipping'),
+        (3, 'Delivered'),
+        (4, 'Cancelled'),
+    )
+    status = models.IntegerField(choices=STATUS_CHOICES, default=1)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
@@ -86,3 +93,6 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.product.name} | {self.amoun} {self.measure}"
+
+    
+# class ProductUsage(models.Model):
