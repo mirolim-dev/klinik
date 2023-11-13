@@ -117,7 +117,7 @@ class OrderItem(models.Model):
     usable_till = models.DateField(null=True)
 
     def __str__(self):
-        return f"{self.product.name} | {self.amoun} {self.measure}"
+        return f"{self.product.name} | {self.amount} {self.measure}"
     
     def clean(self) -> None:
         super().clean()
