@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 # from local
 from hr_management.models import Staff
 # from .validators import validate_measure_type
+# from .utils import calculate_product_amount
 # Create your models here.
 class Supplier(models.Model):
     name = models.CharField(max_length=255)
@@ -149,3 +150,4 @@ class ProductUsage(models.Model):
     def __str__(self):
         return f"{self.product_collections.count()} | {self.staff.get_full_name()}"
 
+        
