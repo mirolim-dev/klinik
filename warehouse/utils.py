@@ -18,7 +18,7 @@ def calculate_product_amount(product: object, amount, measure: int, is_ordering:
     }
 
     p_measure = product.measure
-    x, y = sorted([p_measure, measure])
+    x, y = sorted([p_measure, measure], reverse=True)
 
     dict_data = {
         p_measure: product.amount_in_stock,
@@ -29,3 +29,4 @@ def calculate_product_amount(product: object, amount, measure: int, is_ordering:
     return (total, y)
 
 
+# print(calculate_product_amount())

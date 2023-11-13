@@ -26,10 +26,17 @@ from .utils import calculate_product_amount
 @receiver(post_save, sender=OrderItem)
 def update_product_amount_in_stock(sender, instance, created, **kwargs):
     """Updates Product's amount in stock after OrderItem or ProductUsage added"""
-    product = instance.product_collections.product if isinstance(instance, ProductUsage) else instance.product
-    amount = instance.product_collections.amount if isinstance(instance, ProductUsage) else instance.amount
-    measure = instance.product_collections.measure if isinstance(instance, ProductUsage) else instance.measure
-    is_order_item = isinstance(instance, OrderItem)
-
-    product.amount_in_stock, product.measure = calculate_product_amount(product, amount, measure, is_order_item)
-    product.save()
+    if created:
+        if isinstance(instance, ProductUsage):
+            for product_collection in instance.product_collections.all():
+                product = product_collection.product
+                product.amount_in_stock, product.measure = calculate_product_amount(
+                    product, product_collection.amount, 
+                    product_collection.measure, False)
+                product.save()
+        else:
+            product = instance.product
+            amount = instance.amount
+            measure = instance.measure
+            product.amount_in_stock, product.measure = calculate_product_amount(product, amount, measure, True)
+            product.save()
