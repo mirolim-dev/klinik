@@ -27,7 +27,7 @@ def update_product_amount_in_stock(sender, instance, created, **kwargs):
     product = instance.product_collections.product if isinstance(instance, ProductUsage) else instance.product
     amount = instance.product_collections.amount if isinstance(instance, ProductUsage) else instance.amount
     measure = instance.product_collections.measure if isinstance(instance, ProductUsage) else instance.measure
-    is_order_item = isinstance(instancje, OrderItem)
+    is_order_item = isinstance(instance, OrderItem)
 
     product.amount_in_stock, product.measure = calculate_product_amount(product, amount, measure, is_order_item)
     product.save()
