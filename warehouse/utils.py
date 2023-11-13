@@ -1,6 +1,6 @@
+from decimal import Decimal
 
-
-def calculate_product_amount(product: object, amount: float, measure: int, is_ordering: bool)->tuple:
+def calculate_product_amount(product: object, amount, measure: int, is_ordering: bool)->tuple:
     """
         product: Object of product
         amount: amount of item
@@ -25,7 +25,7 @@ def calculate_product_amount(product: object, amount: float, measure: int, is_or
         measure: amount,
     }
 
-    total = abs(dict_data[x] * (MEASURES[x] / MEASURES[y]) + dict_data[y] if is_ordering else dict_data[x] * (MEASURES[x] / MEASURES[y]) - dict_data[y])
+    total = abs(dict_data[x] * Decimal((MEASURES[x] / MEASURES[y])) + dict_data[y] if is_ordering else dict_data[x] * Decimal((MEASURES[x] / MEASURES[y])) - dict_data[y])
     return (total, y)
 
 
