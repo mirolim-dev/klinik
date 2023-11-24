@@ -5,7 +5,8 @@ from datetime import datetime, timedelta
 
 # from local
 from hr_management.models import Staff
-# from .validators import validate_measure_type
+from .validators import validate_amount_of_product_collection, validate_product_collection
+from .utils import calculate_product_amount
 # from .utils import calculate_product_amount
 # Create your models here.
 class Supplier(models.Model):
@@ -83,6 +84,9 @@ class Product(models.Model):
                 return measure_type
         return None
 
+    def get_measure_name(self)->str:
+        return MeasureChoices.CHOICES[self.measure][1]
+
 
 class Order(models.Model):
     supplier = models.ForeignKey(Supplier, on_delete=models.DO_NOTHING)
@@ -122,8 +126,8 @@ class OrderItem(models.Model):
     def clean(self) -> None:
         super().clean()
         validate_measure_type(self.product, self.measure)
-
     
+
 class ProductsCollection(models.Model):
     product = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
     amount = models.DecimalField(max_digits=25, decimal_places=2)
@@ -137,17 +141,37 @@ class ProductsCollection(models.Model):
         return f"{self.product.name} | {self.barcode_data}"
 
     def clean(self) -> None:
-        super().clean()
         validate_measure_type(self.product, self.measure)
+        validate_amount_of_product_collection(self.product, self.amount, self.measure)
+        super().clean()
+
+    def save(self, *args, **kwargs):
+        """Method is being handled because of barcode_data and 
+            barcode_file_path should be created automatically""" 
+        if not self.pk:#checking is object creating or updating
+            self.barcode_data = ''.join((string.digits) for _ in range(13))
+            self.barcode_file_path = f"media/staffs/barcodes/{self.first_name}_{self.last_name}.png"
+            generate_barcode(self.barcode_data, self.barcode_file_path)
+        super().save(*args, **kwargs)
 
 
 class ProductUsage(models.Model):
-    product_collections = models.ManyToManyField(ProductsCollection)
+    collections = models.ManyToManyField(ProductsCollection)
     staff = models.ForeignKey(Staff, on_delete=models.SET_NULL, null=True)
     description = models.TextField()
     taken_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.product_collections.count()} | {self.staff.get_full_name()}"
+        return f"{self.staff.get_full_name()}"
 
-        
+    # def save(self, *args, **kwargs):
+    #     super().save(*args, **kwargs)  # Save the instance so it gets an id
+    #     self.clean_collections()  # Now you can use many-to-many fields
+
+    # def clean_collections(self):
+    #     print(self.collections.all())
+    #     for pc in self.collections.all():
+    #         validate_product_collection(pc)
+
+
+    

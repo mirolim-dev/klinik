@@ -1,4 +1,5 @@
 from decimal import Decimal
+from django.core.exceptions import ValidationError
 
 def calculate_product_amount(product: object, amount, measure: int, is_ordering: bool)->tuple:
     """
@@ -20,12 +21,18 @@ def calculate_product_amount(product: object, amount, measure: int, is_ordering:
     p_measure = product.measure
     x, y = sorted([p_measure, measure], reverse=True)
 
-    dict_data = {
+    amount_data = {
         p_measure: product.amount_in_stock,
         measure: amount,
     }
-
-    total = abs(dict_data[x] * Decimal((MEASURES[x] / MEASURES[y])) + dict_data[y] if is_ordering else dict_data[x] * Decimal((MEASURES[x] / MEASURES[y])) - dict_data[y])
+    total = 0
+    if is_ordering:
+        total = amount_data[x]*Decimal(MEASURES[x]/MEASURES[y]) + amount_data[y]
+    else:
+        total = amount_data[x]*Decimal(MEASURES[x]/MEASURES[y]) - amount_data[y]
+        print(total, y)
+        
+    # total = abs(amount_data[x] * Decimal((MEASURES[x] / MEASURES[y])) + amount_data[y] if is_ordering else amount_data[x] * Decimal((MEASURES[x] / MEASURES[y])) - amount_data[y])
     return (total, y)
 
 

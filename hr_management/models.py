@@ -72,7 +72,7 @@ class Staff(CustomUser):
             barcode_file_path shoul be created automatically""" 
         if not self.pk:#checking is object creating or updating
             self.barcode_data = ''.join((string.digits) for _ in range(13))
-            self.barcode_file_path = f"media/staffs/barcodes/{self.first_name}_{self.last_name}.png"
+            self.barcode_file_path = f"media/staffs/barcodes/{self.first_name}_{self.last_name}"
             generate_barcode(self.barcode_data, self.barcode_file_path)
         super().save(*args, **kwargs)
 

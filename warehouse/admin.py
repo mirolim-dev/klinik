@@ -32,6 +32,10 @@ admin.site.register(Product, ProductAdmin)
 
 class ProductUsageAdmin(admin.ModelAdmin):
     list_display = ['id', 'staff', 'taken_at']
+    # def save_model(self, request, obj, form, change):
+    #     super().save_model(request, obj, form, change)
+    #     form.save_m2m()  # This will save the many-to-many fields
+    #     obj.clean_collections()  # Now you can use many-to-many fields
 admin.site.register(ProductUsage, ProductUsageAdmin)
 
 
