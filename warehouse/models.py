@@ -8,7 +8,10 @@ import string
 # from local
 from hr_management.models import Staff
 from hr_management.utils import generate_barcode
-from .validators import validate_amount_of_product_collection, validate_product_collection
+from .validators import (
+    validate_amount_of_product_collection, 
+    validate_product_collection,
+    validate_barcode_data)
 from .utils import calculate_product_amount
 # from .utils import calculate_product_amount
 # Create your models here.
@@ -112,7 +115,6 @@ class Order(models.Model):
         total_price = self.orderitem_set.aggregate(
             total=Sum(F('amount') * F('product__unit_price'))
         )['total']
-        
         return total_price or 0
     
 
@@ -136,8 +138,8 @@ class ProductsCollection(models.Model):
     amount = models.DecimalField(max_digits=25, decimal_places=2)
     measure = models.IntegerField(choices=MeasureChoices.CHOICES, default=1)
     usable_till = models.DateField()
-    barcode_data = models.CharField(max_length=11)
-    barcode_file = models.ImageField(upload_to='products_collection/barcodes/')
+    barcode_data = models.CharField(max_length=13, editable=False, unique=True)
+    barcode_file = models.ImageField(upload_to='products_collection/barcodes/', editable=False)
     is_exists = models.BooleanField(default=True)
 
     def __str__(self):
@@ -152,8 +154,14 @@ class ProductsCollection(models.Model):
         """Method is being handled because of barcode_data and 
             barcode_file_path should be created automatically""" 
         if not self.pk:#checking is object creating or updating
-            self.barcode_data = ''.join((string.digits) for _ in range(13))
-            self.barcode_file_path = f"media/staffs/barcodes/{self.first_name}_{self.last_name}.png"
+            self.barcode_data = ''.join((string.digits) for _ in range(11))
+            while True:
+                try:
+                    validate_barcode_data(self.barcode_data)
+                    break
+                except ValidationError:
+                    pass
+            self.barcode_file_path = f"media/products_collection/barcodes/"
             generate_barcode(self.barcode_data, self.barcode_file_path)
         super().save(*args, **kwargs)
 
@@ -167,5 +175,7 @@ class ProductUsage(models.Model):
     def __str__(self):
         return f"{self.staff.get_full_name()}"
 
+    # class Meta:
+    #     unique_together = 
 
     

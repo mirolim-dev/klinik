@@ -1,6 +1,9 @@
 from django.core.exceptions import ValidationError
 from decimal import Decimal
 
+#from local
+from hr_management.models import Staff
+
 def validate_amount_of_product_collection(product:object, amount:Decimal, measure:int)->None:
     MILLIGRAMM = 0
     GRAMM = 1
@@ -28,3 +31,10 @@ def validate_amount_of_product_collection(product:object, amount:Decimal, measur
 def validate_product_collection(collection: object):
     if not collection.is_exists:
         raise ValidationError(f"{collection} is already used")
+
+
+def validate_barcode_data(barcode_data:str):
+    barcodes_lists = Staff.objects.select_related('specialization', 'department')\
+        .values_list('barcode_data', flat=True)
+    if barcode_data in barcodes_lists:
+        raise ValidationError(f"{barcode_data} is already used in Staff's barcode_data")

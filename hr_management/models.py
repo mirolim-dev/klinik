@@ -59,7 +59,7 @@ class Staff(CustomUser):
         (2, 'EUR')
     )
     salary_currency = models.IntegerField(choices=CURRENCY_CHOICES, default=0)
-    barcode_data = models.CharField(max_length=100, unique=True, blank=True)
+    barcode_data = models.CharField(max_length=13, unique=True, blank=True)
     barcode_file_path = models.CharField(max_length=255, unique=True, blank=True)
     # date_joined = models.DateTimeField(auto_now_add=True)  #already exist in CustomUser
     edited_at = models.DateTimeField(auto_now=True)

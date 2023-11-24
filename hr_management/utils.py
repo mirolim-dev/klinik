@@ -14,7 +14,7 @@ def generate_barcode(barcode_data, directory_name):
     # Create the directory if it doesn't exist
     os.makedirs(full_directory_path, exist_ok=True)
     
-    filename = f"{barcode_data}.png"
+    filename = barcode_data
     full_filepath = os.path.join(full_directory_path, filename)
     
     ean_barcode.save(full_filepath)
