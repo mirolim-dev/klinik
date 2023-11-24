@@ -2,9 +2,12 @@ from django.db import models
 from django.db.models import F, Sum
 from django.core.exceptions import ValidationError
 from datetime import datetime, timedelta
+import random
+import string
 
 # from local
 from hr_management.models import Staff
+from hr_management.utils import generate_barcode
 from .validators import validate_amount_of_product_collection, validate_product_collection
 from .utils import calculate_product_amount
 # from .utils import calculate_product_amount
@@ -163,15 +166,6 @@ class ProductUsage(models.Model):
 
     def __str__(self):
         return f"{self.staff.get_full_name()}"
-
-    # def save(self, *args, **kwargs):
-    #     super().save(*args, **kwargs)  # Save the instance so it gets an id
-    #     self.clean_collections()  # Now you can use many-to-many fields
-
-    # def clean_collections(self):
-    #     print(self.collections.all())
-    #     for pc in self.collections.all():
-    #         validate_product_collection(pc)
 
 
     

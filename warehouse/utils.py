@@ -27,12 +27,15 @@ def calculate_product_amount(product: object, amount, measure: int, is_ordering:
     }
     total = 0
     if is_ordering:
-        total = amount_data[x]*Decimal(MEASURES[x]/MEASURES[y]) + amount_data[y]
+        if x == y:
+            total = product.amount_in_stock + amount
+        else:
+            total = amount_data[x]*Decimal(MEASURES[x]/MEASURES[y]) + amount_data[y]
     else:
-        total = amount_data[x]*Decimal(MEASURES[x]/MEASURES[y]) - amount_data[y]
-        print(total, y)
-        
-    # total = abs(amount_data[x] * Decimal((MEASURES[x] / MEASURES[y])) + amount_data[y] if is_ordering else amount_data[x] * Decimal((MEASURES[x] / MEASURES[y])) - amount_data[y])
+        if x == y:
+            total = product.amount_in_stock - amount
+        else:
+            total = amount_data[x]*Decimal(MEASURES[x]/MEASURES[y]) - amount_data[y]
     return (total, y)
 
 
