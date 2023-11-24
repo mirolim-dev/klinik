@@ -34,7 +34,5 @@ def validate_product_collection(collection: object):
 
 
 def validate_barcode_data(barcode_data:str):
-    barcodes_lists = Staff.objects.select_related('specialization', 'department')\
-        .values_list('barcode_data', flat=True)
-    if barcode_data in barcodes_lists:
+    if Staff.objects.filter(barcode_data=barcode_data).exists():
         raise ValidationError(f"{barcode_data} is already used in Staff's barcode_data")
