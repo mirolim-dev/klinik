@@ -1,8 +1,8 @@
 from django.db import models
 from account.models import CustomUser
+from datetime import datetime, timedelta
 import random
 import string
-from datetime import datetime, timedelta
 # from packages
 from ckeditor_uploader.fields import RichTextUploadingField
 # from local
@@ -13,7 +13,7 @@ from .validators import (
     validate_file_size, 
     validate_file_type)
 from .specialization_models import StaffSpecialization, DoctorSpecialization
-from .utils import generate_barcode
+from .utils import generate_barcode, generate_barcode_data
 from departments.models import Department
 
 # Create your models here.
@@ -71,7 +71,8 @@ class Staff(CustomUser):
         """Method is being handled because of barcode_data and 
             barcode_file_path shoul be created automatically""" 
         if not self.pk:#checking is object creating or updating
-            self.barcode_data = ''.join((string.digits) for _ in range(13))
+            self.barcode_data = generate_barcode_data('ST')
+            #ST(STuff) is prefix for making stuff's barcode data from ProductCollections' barcode data  
             self.barcode_file_path = f"media/staffs/barcodes/{self.first_name}_{self.last_name}"
             generate_barcode(self.barcode_data, self.barcode_file_path)
         super().save(*args, **kwargs)

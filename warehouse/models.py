@@ -155,10 +155,10 @@ class ProductsCollection(models.Model):
         """Method is being handled because of barcode_data and 
             barcode_file_path should be created automatically""" 
         if not self.pk:#checking is object creating or updating
-            self.barcode_data = ''.join((string.digits) for _ in range(11))
+            self.barcode_data = generate_barcode("PC")
+            # PC(ProductCollection) is prefix for making different ProductCollections' barcoe data from Staff's barcode data
             while True:
                 try:
-                    validate_barcode_data(self.barcode_data)
                     break
                 except ValidationError:
                     pass

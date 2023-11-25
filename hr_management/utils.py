@@ -5,6 +5,9 @@ from django.conf import settings
 import random
 import string
 
+def generate_barcode_data(starts_with:str='')->str:
+    barcode_data = f'{starts_with}'.join(random.choice(string.digits) for _ in range(13-len(starts_with)))
+    return barcode_data
 
 def generate_barcode(barcode_data, directory_name):
     ean = barcode.get_barcode_class('ean13')
