@@ -5,7 +5,7 @@ from django.dispatch import receiver
 
 # from local
 from hr_management.models import Patient
-
+# from .validators import validate_payment_invoice
 # Create your models here.
 class Invoice(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
@@ -41,7 +41,7 @@ class Invoice(models.Model):
         return self.payments_set.select_related('invoice')
 
     def get_string_data_of_status(self)->str:
-        return self.STATUS_CHOICES[[self.status-1][1]]
+        return self.STATUS_CHOICES[self.status-1][1]
 
 
 class Payment(models.Model):
@@ -59,17 +59,18 @@ class Payment(models.Model):
         return f"{self.invoice.patient} | {self.amount} | {self.get_string_data_of_payment_type()}"
     
     def get_string_data_of_payment_type(self)->str:
-        return self.PAYMENT_TYPE_CHOICES[[self.payment_type-1][1]]
+        print(f"Payment Type: {self.payment_type}")
+        return self.PAYMENT_TYPE_CHOICES[self.payment_type-1][1]
 
-    def save(self, *args, **kwargs):
-        if self.invoice.status > 2:
-            raise ValidationError(f"You can't do payment for this Invoice. Because it is \
-                {self.invoice.get_string_data_of_status()}")
-    
     def clean(self):
         super().clean()
-        if self.invoice.residual_mount < self.amount <= 0:
-            raise ValidationError(f"amount shoud be greater then 0 and less then invoice's residual_amount")
+        if self.invoice.residual_amount < self.amount <= 0:
+            raise ValidationError(f"amount should be greater then 0 and less then invoice's residual_amount")
+        if self.invoice.status > 2:
+            raise ValidationError(f"You can't do payment for this Invoice. Because it is {self.invoice.get_string_data_of_status()}")
+
+    
+    
 
 @receiver(post_save, sender=Payment)
 def update_invoice_status(sender, instance, **kwargs):
