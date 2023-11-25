@@ -25,18 +25,18 @@ def validate_available_time(from_time, to):
         raise ValidationError("Available time should be more then 2 hours")
 
 
-def validate_staff_is_vorking(value):
+def validate_staff_is_working(value):
     if not value.working:
-        ValidationError("This stuff is not working. Choose another stuff or change working status to True")
+        raise ValidationError("This stuff is not working. Choose another stuff or change working status to True")
 
 
 def validate_file_type(value):
     valid_extentions = ['jpg', 'jpeg', 'png', 'web', 'pdf', 'doc', 'docx']
     extention = str(value).split('.')[-1].lower()
     if not extention in valid_extentions:
-        ValidationError(f"Invalid file extention. Your file's extention should \
+        raise ValidationError(f"Invalid file extention. Your file's extention should \
                         be one of these valid extentions ({', '.join(valid_extentions)})")
 
 def validate_file_size(value):
     if value.size > 3 * 1024 * 1024:
-        return ValidationError(f"Your file size({value.size}) higher. But maximum size shoul be 3MB")
+        raise ValidationError(f"Your file size({value.size}) higher. But maximum size shoul be 3MB")

@@ -8,6 +8,7 @@ import string
 # from local
 from hr_management.models import Staff
 from hr_management.utils import generate_barcode
+from hr_management.validators import validate_staff_is_working
 from .validators import (
     validate_amount_of_product_collection, 
     validate_product_collection,
@@ -175,6 +176,9 @@ class ProductUsage(models.Model):
     def __str__(self):
         return f"{self.staff.get_full_name()}"
 
+    def clean(self) -> None:
+        validate_staff_is_working(self.staff)
+        return super().clean()
     # class Meta:
     #     unique_together = 
 

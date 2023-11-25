@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='diagnoz',
             name='responsible_person',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='hr_management.staff', validators=[hr_management.validators.validate_staff_is_vorking]),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='hr_management.staff', validators=[hr_management.validators.validate_staff_is_working]),
         ),
         migrations.AlterField(
             model_name='diagnozpatientusage',

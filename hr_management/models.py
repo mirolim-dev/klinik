@@ -9,7 +9,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from .validators import (
     validate_insurance_fields, 
     validate_available_time,
-    validate_staff_is_vorking,
+    validate_staff_is_working,
     validate_file_size, 
     validate_file_type)
 from .specialization_models import StaffSpecialization, DoctorSpecialization
@@ -126,7 +126,7 @@ class AvailableTime(models.Model):
 
     def clean(self) -> None:
         super().clean()
-        validate_staff_is_vorking(self.staff)
+        validate_staff_is_working(self.staff)
         validate_available_time(self.from_time, self.to)
         
 
