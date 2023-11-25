@@ -41,7 +41,8 @@ admin.site.register(ProductUsage, ProductUsageAdmin)
 
 class ProductCollectionAdmin(admin.ModelAdmin):
     list_display = ['product', 'amount', 'measure', 
-        'usable_till', 'is_exists']
+        'usable_till', 'is_exists', 'barcode_data']
+    readonly_fields = ['barcode_data']
 admin.site.register(ProductsCollection, ProductCollectionAdmin)
 
 

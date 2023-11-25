@@ -7,7 +7,7 @@ import string
 
 # from local
 from hr_management.models import Staff
-from hr_management.utils import generate_barcode
+from hr_management.utils import generate_barcode, generate_barcode_data
 from hr_management.validators import validate_staff_is_working
 from .validators import (
     validate_amount_of_product_collection, 
@@ -155,8 +155,8 @@ class ProductsCollection(models.Model):
         """Method is being handled because of barcode_data and 
             barcode_file_path should be created automatically""" 
         if not self.pk:#checking is object creating or updating
-            self.barcode_data = generate_barcode("PC")
-            # PC(ProductCollection) is prefix for making different ProductCollections' barcoe data from Staff's barcode data
+            self.barcode_data = generate_barcode_data("123")
+            # 123 is for making different ProductCollections' barcode data from Staff's barcode data
             while True:
                 try:
                     break

@@ -71,8 +71,8 @@ class Staff(CustomUser):
         """Method is being handled because of barcode_data and 
             barcode_file_path shoul be created automatically""" 
         if not self.pk:#checking is object creating or updating
-            self.barcode_data = generate_barcode_data('ST')
-            #ST(STuff) is prefix for making stuff's barcode data from ProductCollections' barcode data  
+            self.barcode_data = generate_barcode_data('999')
+            #999 is for making stuff's barcode data from ProductCollections' barcode data  
             self.barcode_file_path = f"media/staffs/barcodes/{self.first_name}_{self.last_name}"
             generate_barcode(self.barcode_data, self.barcode_file_path)
         super().save(*args, **kwargs)
