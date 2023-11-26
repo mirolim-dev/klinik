@@ -6,6 +6,7 @@ from ckeditor_uploader.fields import RichTextUploadingField
 from departments.models import Department, Room
 from hr_management.models import Staff, Patient
 from hr_management.validators import validate_staff_is_working
+from warehouse.models import Product
 from .validators import validate_diagnoz
 # Create your models here.
 
@@ -55,7 +56,7 @@ class Diagnoz(models.Model):
 
 class DiagnozProductUsage(models.Model):
     diagnoz = models.ForeignKey(Diagnoz, on_delete=models.CASCADE, validators=[validate_diagnoz])
-    # product = models.ForeignKey(Product, on_delete=models.CASCADE) #it comes from warehouse
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True) #it comes from warehouse
     amount = models.DecimalField(max_digits=25, decimal_places=2, default=0.00)
     MEASURE_CHOICES = (
         (1, "MilliGramm"),
