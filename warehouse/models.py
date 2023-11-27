@@ -9,6 +9,8 @@ import string
 from hr_management.models import Staff
 from hr_management.utils import generate_barcode, generate_barcode_data
 from hr_management.validators import validate_staff_is_working
+
+from departments.models import DepartmentStorage
 from .validators import (
     validate_amount_of_product_collection, 
     validate_product_collection,
@@ -168,6 +170,7 @@ class ProductsCollection(models.Model):
 
 
 class ProductUsage(models.Model):
+    for_storage = models.ForeignKey(DepartmentStorage, on_delete=models.CASCADE, null=True)
     collections = models.ManyToManyField(ProductsCollection)
     staff = models.ForeignKey(Staff, on_delete=models.SET_NULL, null=True)
     description = models.TextField()
@@ -182,4 +185,12 @@ class ProductUsage(models.Model):
     # class Meta:
     #     unique_together = 
 
+
+class ProductInStorage(models.Model):
+    storage = models.ForeignKey(DepartmentStorage, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    amount = models.DecimalField(max_digits=25, decimal_places=2, default=0.00)
+    measure = models.IntegerField(choices=MeasureChoices.CHOICES, default=2)
     
+    def __str__(self):
+        return f"{self.product.name} | {self.amount} {self.meas}"

@@ -1,5 +1,8 @@
 from django.contrib import admin
-from .models import Department
+from .models import (
+    Department, DepartmentStorage,
+    Room, RoomStuff, Bed,
+    )
 from .meals_models import Meal, MealAmount, MealTime, Admission
 # from .head_doctor_models import HeadDoctor
 
@@ -10,9 +13,34 @@ class DepartmentAdmin(admin.ModelAdmin):
     list_display_links = ['name']
 admin.site.register(Department, DepartmentAdmin)
 
+
+class DepartmentStorageAdmin(admin.ModelAdmin):
+    list_display = ['id', 'department', 'room']
+admin.site.register(DepartmentStorage, DepartmentStorageAdmin)
+
+
+class RoomAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name', 'department']
+admin.site.register(Room, RoomAdmin)
+
+
+class RoomStuffAdmin(admin.ModelAdmin):
+    list_display = ['id', 'room', 'name', 'quantity',
+    'created_at', ]
+admin.site.register(RoomStuff, RoomStuffAdmin)
+
+
+class BedAdmin(admin.ModelAdmin):
+    list_display = ['id', 'room', 'number_of_beds',
+    'price_for_one_day', 'status']
+    filter_fields = ['status']
+admin.site.register(Bed, BedAdmin)
+
+
 class AdmissionAdmin(admin.ModelAdmin):
     list_display = ['id', 'department', 'patient', 'bed', 'starts_at', 'finishes_at', 'status']
 admin.site.register(Admission, AdmissionAdmin)
+
 
 class MealAdmin(admin.ModelAdmin):
     list_display = ['id', 'name']

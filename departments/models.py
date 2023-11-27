@@ -1,5 +1,7 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 
+# from warehouse.models import Product, MeasureChoices
 # from local
 # from hr_management.doctor_models import Doctor
 # Create your models here.
@@ -59,7 +61,14 @@ class Bed(models.Model):
             ).filter(status__in=(1, 2)).count()
 
 
+class DepartmentStorage(models.Model):
+    department = models.ForeignKey(Department, on_delete=models.CASCADE)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f"{self.department.name} | {self.room.name}"
 
-
-
+    def clean(self) -> None:
+        if self.department.id != self.room.department.id:
+            raise ValidationError(f"Choose the room belonging to {self.department.name}")
+        return super().clean()

@@ -4,7 +4,8 @@ from django.contrib import admin
 from .models import (
     Product, ProductsCollection, 
     ProductUsage, Order, OrderItem, 
-    Supplier, Section, ItemCategory
+    Supplier, Section, ItemCategory,
+    ProductInStorage,
     )
 # Register your models here.
 class SupplierAdmin(admin.ModelAdmin):
@@ -55,3 +56,8 @@ class OrderItemAdmin(admin.ModelAdmin):
     list_display = ['id', 'order', 'product', 
         'amount', 'measure', 'usable_till']
 admin.site.register(OrderItem, OrderItemAdmin)
+
+class ProductInStorageAdmin(admin.ModelAdmin):
+    list_display = ['id', 'storage', 'product', 'amount', 'measure']
+    filter_fields = ['measure']
+admin.site.register(ProductInStorage, ProductInStorageAdmin)
