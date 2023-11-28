@@ -5,3 +5,8 @@ from django.shortcuts import render
 def home_view(request):
     context = {}
     return render(request, 'outlook/index.html', context)
+
+
+def dash_home1(request):
+    context = {}
+    return render(request, 'dashboard/index.html', context)
