@@ -9,4 +9,4 @@ def home_view(request):
 
 def dash_home1(request):
     context = {}
-    return render(request, 'dashboard/index.html', context)
+    return render(request, 'departments/index.html', context)

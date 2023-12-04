@@ -1,0 +1,31 @@
+{% load static %}
+
+{% block header %}
+    {% include "base/header.html" %}
+{% endblock header %}
+
+{% block body %}
+    {% block preloader %}
+        {% include "base/preloader.html" %}
+    {% endblock preloader %}
+    
+    {% block nav_header %}
+        {% include "base/nav_header.html" %}
+    {% endblock nav_header %}
+
+    {% block sidebar %}
+        {% include "base/sidebar.html" %}
+    {% endblock sidebar %}
+    
+    {% block content %}{% endblock content %}
+{% endblock body %}
+
+
+{% block script %}
+{% comment %} JS script lins are here {% endcomment %}
+    {% include "base/scripts.html" %}
+{% endblock script %}
+
+{% block footer %}
+    {% include 'base/footer.html' %}
+{% endblock footer %}
