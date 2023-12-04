@@ -1,20 +1,20 @@
 {% load static %}
 
 {% block header %}
-    {% include "dashboard/helper/header.html" %}
+    {% include "base/header.html" %}
 {% endblock header %}
 
 {% block body %}
     {% block preloader %}
-        {% include "dashboard/helper/preloader.html" %}
+        {% include "base/preloader.html" %}
     {% endblock preloader %}
     
     {% block nav_header %}
-        {% include "dashboard/helper/nav_header.html" %}
+        {% include "base/nav_header.html" %}
     {% endblock nav_header %}
 
     {% block sidebar %}
-        {% include "dashboard/helper/sidebar.html" %}
+        {% include "base/sidebar.html" %}
     {% endblock sidebar %}
     
     {% block content %}{% endblock content %}
@@ -23,9 +23,9 @@
 
 {% block script %}
 {% comment %} JS script lins are here {% endcomment %}
-    {% include "dashboard/helper/scripts.html" %}
+    {% include "base/scripts.html" %}
 {% endblock script %}
 
 {% block footer %}
-    {% include 'dashboard/helper/footer.html' %}
+    {% include 'base/footer.html' %}
 {% endblock footer %}
