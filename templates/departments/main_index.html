@@ -122,7 +122,20 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">All Departmets</h4>
+                    {% if search_data %}
+                        <h4 class="card-title">Searched for 👉{{ search_data }}</h4>
+                    {% else %}
+                        <h4 class="card-title">All Departmets</h4>
+                    {% endif %}
+                    <div class="col-lg-6">
+                        <form class="form-inline float-right" method='post'>
+                            {% csrf_token %}
+                          <div class="form-group mb-2">
+                            <input type="text" name='search_input' class="form-control" placeholder="Search">
+                          </div>
+                          <button type="submit" class="btn btn-primary mb-2">Search</button>
+                        </form>
+                      </div>
                 </div>
                 <div class="card-body">
                     
@@ -214,7 +227,7 @@
             </div>     
         </div>
         
-        {% comment %} <div class="table-responsive">
+            {% comment %} <div class="table-responsive">
             <table class="table">
                 <caption>List of users</caption>
                 <thead>
