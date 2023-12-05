@@ -49,7 +49,7 @@ class Patient(CustomUser):
 
 class Staff(CustomUser):
     specialization = models.ForeignKey(StaffSpecialization, on_delete=models.DO_NOTHING)
-    department = models.ForeignKey(Department, on_delete=models.DO_NOTHING)
+    department = models.ForeignKey(Department, on_delete=models.DO_NOTHING, related_name='staff_department')
     image = models.ImageField(upload_to="staffs/images/", blank=True)
     working = models.BooleanField(default=True)
     salary = models.DecimalField(max_digits=25, decimal_places=2, default=0.00)
