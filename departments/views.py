@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.shortcuts import render
 
 from .models import Department
@@ -5,8 +6,13 @@ from .models import Department
 
 def main_index(request):
     departments = Department.objects.all()
+    paginator = Paginator(departments, 1)  # Show 10 departments per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        'departments': departments,
+        'page_obj': page_obj,
     }
+  
 
     return render(request, "departments/main_index.html", context)

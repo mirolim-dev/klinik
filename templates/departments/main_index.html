@@ -122,7 +122,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title">Bordered Table</h4>
+                    <h4 class="card-title">All Departmets</h4>
                 </div>
                 <div class="card-body">
                     
@@ -140,16 +140,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {% for department in departments %}
+                                {% for obj in page_obj %}
                                     <tr>
-                                        <td>{{ department.id }}</td>
-                                        <td>{{ department.name }}</td>
-                                        <td>{{ department.get_all_active_staffs.count }}</td>
-                                        <td>{{ department.get_all_active_doctors.count }}</td>
-                                        <td>{{ department.get_all_rooms.count }}</td>
+                                        <td>{{ obj.id }}</td>
+                                        <td>{{ obj.name }}</td>
+                                        <td>{{ obj.get_all_active_staffs.count }}</td>
+                                        <td>{{ obj.get_all_active_doctors.count }}</td>
+                                        <td>{{ obj.get_all_rooms.count }}</td>
                                         <td>
-                                            {% if department.get_head_doctor %}
-                                                {{ department.get_head_doctor }}
+                                            {% if obj.get_head_doctor %}
+                                                {{ obj.get_head_doctor }}
                                             {% else %}
                                                 None
                                             {% endif %}
@@ -173,10 +173,47 @@
                         </table>
                         
                     </div>
-                </div>
-            </div>
-        </div>
+                    <nav>
+                        <ul class="pagination pagination-sm pagination-gutter">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item page-indicator">
+                                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                                        <i class="icon-arrow-left"></i></a>
+                                </li>
+                            {% else %}
+                                <li class="page-item page-indicator">
+                                    <a class="page-link" href="#">
+                                        <i class="icon-arrow-left"></i></a>
+                                </li>
+                            {% endif %}
+                            
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if num == page_obj.number %}
+                                    <li class="page-item active"><a class="page-link" href="javascript:void()">{{ num }}</a></li>
+                                {% else %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                                {% endif %}
+                            {% endfor %}
 
+                            {% if page_obj.has_next %}
+                                <li class="page-item page-indicator">
+                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                                        <i class="icon-arrow-right"></i></a>
+                                </li>
+                            {% else %}
+                                <li class="page-item page-indicator">
+                                    <a class="page-link" href="#">
+                                        <i class="icon-arrow-right"></i></a>
+                                </li>
+                            {% endif %}
+                            
+                        </ul>
+                    </nav>
+                </div>
+                
+            </div>     
+        </div>
+        
         {% comment %} <div class="table-responsive">
             <table class="table">
                 <caption>List of users</caption>
