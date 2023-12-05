@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.exceptions import ValidationError
 
+# from hr_management.models import Doctor
 # from warehouse.models import Product, MeasureChoices
 # from local
 # from hr_management.doctor_models import Doctor
@@ -16,6 +17,18 @@ class Department(models.Model):
 
     def get_all_rooms(self):
         return self.room_set.select_related('department')
+
+    def get_all_active_staffs(self):
+        return self.staff_department.filter(working=True).select_related('specialization')
+            
+    def get_all_active_doctors(self):
+        return self.staff_department.filter(working=True, doctor__isnull=False).select_related('specialization')
+            
+
+    def get_head_doctor(self):
+        # (4, "Head Doctor"),
+        return self.staff_department.filter(working=True, \
+            doctor__isnull=False, doctor__position=4).select_related('specialization')
 
 
 class Room(models.Model):
