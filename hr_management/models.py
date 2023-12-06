@@ -98,7 +98,10 @@ class Doctor(Staff):
         """method is Handling because of staff's specialiation should be set 
             automatically when Doctor has been created"""
         if not self.pk:
-            staff_specialization = StaffSpecialization.objects.get(name='Doctor')
+            try:
+                staff_specialization = StaffSpecialization.objects.get(name='Doctor')
+            except:
+                staff_specialization = StaffSpecialization.objects.create(name='Doctor')
             if not bool(staff_specialization):
                 staff_specialization = StaffSpecialization.objects.create(name="Doctor")
             self.specialization = staff_specialization

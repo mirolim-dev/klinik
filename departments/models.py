@@ -26,9 +26,10 @@ class Department(models.Model):
             
 
     def get_head_doctor(self):
+        head_doctor = self.staff_department.filter(working=True, \
+            doctor__isnull=False, doctor__position=4).select_related('specialization').first() or None
         # (4, "Head Doctor"),
-        return self.staff_department.filter(working=True, \
-            doctor__isnull=False, doctor__position=4).select_related('specialization')
+        return head_doctor
 
 
 class Room(models.Model):

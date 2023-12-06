@@ -16,7 +16,16 @@ def main_index(request):
     context = {
         'page_obj': page_obj,
         'search_data': search_data,
-    }
+    }   
   
-
     return render(request, "departments/main_index.html", context)
+
+
+def department_detail(request, pk:int):
+    department = Department.objects.get(id=pk)
+    context = {
+        'department': department,    
+    }
+    return render(request, 'departments/single_department.html', context)
+
+

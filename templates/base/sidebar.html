@@ -16,7 +16,8 @@
             <li class="nav-label">Departments</li>
             <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa-sharp fa-regular fa-hospital"></i><span class="nav-text">Department</span></a>
                 <ul aria-expanded="false">
-                    <li><a href="./app-profile.html">Profile</a></li>
+                    <li><a href="{% url "main_index" %}">Departments</a></li>
+                    <li><a href="{% url "detail-department" pk=1 %}">Department Single</a></li>
                     <li><a href="./app-profile.html">Rooms</a></li>
                     <li><a href="./app-profile.html">Room Stuffs</a></li>
                     <li><a href="./app-profile.html">Profile</a></li>
