@@ -21,6 +21,12 @@ def main_index(request):
     return render(request, "departments/main_index.html", context)
 
 
+def main_index2(request):
+    context = {
+
+    }
+    return render(request, "departments/index3.html", context)
+
 def department_detail(request, pk:int):
     department = Department.objects.get(id=pk)
     context = {
