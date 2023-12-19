@@ -1,5 +1,5 @@
 from django.core.paginator import Paginator
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from .models import Department
 # Create your views here.
@@ -28,7 +28,7 @@ def main_index2(request):
     return render(request, "departments/index3.html", context)
 
 def department_detail(request, pk:int):
-    department = Department.objects.get(id=pk)
+    department = get_object_or_404(Department, id=pk)
     context = {
         'department': department,    
     }
