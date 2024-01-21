@@ -31,6 +31,20 @@ class Department(models.Model):
         # (4, "Head Doctor"),
         return head_doctor
 
+    def get_all_beds(self):
+        return self.room_set.filter(bed__isnull=False)
+
+    def get_all_department_storages(self):
+        return self.departmentstorage_set.select_related('department', 'room')
+
+    def get_all_admissions(self):
+        return self.admission_set.select_related('department', 'patient', 'bed')
+
+    def get_all_patients(self):
+        admissions = self.get_all_admissions()
+        patients = set(admission.patinent for admission in admissions)
+        return patients 
+
 
 class Room(models.Model):
     name = models.CharField(max_length=255, unique=True, default="Room 5-45A")
