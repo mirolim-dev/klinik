@@ -1,0 +1,118 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% block content %}
+    <div class="content-body">
+        <!--Table Bootstrap-->
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    {% if search_data %}
+                        <h4 class="card-title">Searched for 👉{{ search_data }}</h4>
+                    {% else %}
+                        <h4 class="card-title">Patients in {{ department.name }}</h4>
+                    {% endif %}
+                    <div class="col-lg-6">
+                        <form class="form-inline float-right" method='post'>
+                            {% csrf_token %}
+                        <div class="form-group mb-2">
+                            <input type="text" name='search_input' class="form-control" placeholder="Search">
+                        </div>
+                        <button type="submit" class="btn btn-primary mb-2">Search</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="card-body">
+                    
+                    <div class="table-responsive">
+                        <table class="table table-bordered verticle-middle table-responsive-sm">
+                            <thead>
+                                {% if patients %}
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Firstname</th>
+                                        <th scope="col">Lastname</th>
+                                        <th scope="col">Phone</th>
+                                        <th scope="col">Gender</th>
+                                        <th scope="col">Address</th>
+                                        <th scope="col">Date of Birth</th>
+                                        <th scope="col">Insurance Provider</th>
+                                        <th scope="col">Insurance Policy Number</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                {% else %}
+                                    <h5>There are no patients in this department</h5>
+                                {% endif %}
+                            </thead>
+                            <tbody>
+                                {% for patient in patients %}
+                                    <tr>
+                                        <td>{{ patient.id }}</td>
+                                        <td>{{ patient.first_name }}</td>
+                                        <td>{{ patient.last_name }}</td>
+                                        <td>{{ patient.phone }}</td>
+                                        <td>{{ patient.gender }}</td>
+                                        <td>{{ patient.address }}</td>
+                                        <td>{{ patient.date_of_birth }}</td>
+                                        <td>{{ patient.insurance_provider }}</td>
+                                        <td>{{ patient.insurance_policy_number }}</td>
+                                        <td>
+                                            <span>
+
+                                                <a href="#" class="mr-4" data-toggle="tooltip"
+                                                    data-placement="top" title="View"><i
+                                                            class="fa fa-eye color-muted"></i></a>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        
+                    </div>
+                    <nav>
+                        <ul class="pagination pagination-sm pagination-gutter">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item page-indicator">
+                                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                                        <i class="icon-arrow-left"></i></a>
+                                </li>
+                            {% else %}
+                                {% if patients %}
+                                    <li class="page-item page-indicator">
+                                        <a class="page-link" href="#">
+                                            <i class="icon-arrow-left"></i></a>
+                                    </li>
+                                {% endif %}
+                            {% endif %}
+                            
+                            {% for num in page_obj.paginator.page_range %}
+                                {% if num == page_obj.number %}
+                                    <li class="page-item active"><a class="page-link" href="javascript:void()">{{ num }}</a></li>
+                                {% else %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                                <li class="page-item page-indicator">
+                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                                        <i class="icon-arrow-right"></i></a>
+                                </li>
+                            {% else %}
+                                {% if patients %}
+                                    <li class="page-item page-indicator">
+                                        <a class="page-link" href="#">
+                                            <i class="icon-arrow-right"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% endif %}
+                            
+                        </ul>
+                    </nav>
+                </div>
+                
+            </div>     
+        </div>
+    </div>
+{% endblock content %}

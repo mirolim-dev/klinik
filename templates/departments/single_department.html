@@ -22,19 +22,21 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-3 col-sm-6">
-                    <div class="card">
-                        <div class="stat-widget-one card-body">
-                            <div class="stat-icon d-inline-block">
-                                <i class="fa-regular fa-hospital-user text-primary border-primary"></i>
-                            </div>
-                            <div class="stat-content d-inline-block">
-                                <div class="stat-text">Patients</div>
-                                <div class="stat-digit">
-                                    {{ department.get_all_patients|length }}
+                    <a href="{% url "show-patients-by-department" department_id=department.id %}">
+                        <div class="card">
+                            <div class="stat-widget-one card-body">
+                                <div class="stat-icon d-inline-block">
+                                    <i class="fa-regular fa-hospital-user text-primary border-primary"></i>
+                                </div>
+                                <div class="stat-content d-inline-block">
+                                    <div class="stat-text">Patients</div>
+                                    <div class="stat-digit">
+                                        {{ department.get_all_patients|length }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </a>    
                 </div>
                 <div class="col-lg-3 col-sm-6">
                     <div class="card">
