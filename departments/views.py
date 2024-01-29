@@ -1,8 +1,9 @@
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
 
 from .models import Department
-from hr_management.models import Doctor
+from hr_management.models import Doctor, Patient
 # Create your views here.
 
 def main_index(request):
@@ -42,37 +43,34 @@ def show_all_patients_by_department(request, department_id:int):
     patients = department.get_all_patients()
     paginator = Paginator(patients, 10)  # Show 10 departments per page
     page_number = request.GET.get('page')
-    page_patients = paginator.get_page(page_number)
-    # fake_patient_data = [ #it should be removed before deploying
-    #     {
-    #         'id': 1,
-    #         'first_name': "Ibragim",
-    #         'last_name': "Xolmatov",
-    #         'phone': "+998 95 978 45 65",
-    #         'gender': "Male",
-    #         'address': "Qo'qon",
-    #         'date_of_birth': "2001-12-31",
-    #         'insurance_provider': None,
-    #         'insurance_policy_number': None,
-    #     },
-    #     {
-    #         'id': 2,
-    #         'first_name': "Iftixor",
-    #         'last_name': "Xolmatov",
-    #         'phone': "+998 95 978 45 66",
-    #         'gender': "Male",
-    #         'address': "Qo'qon",
-    #         'date_of_birth': "2001-11-15",
-    #         'insurance_provider': None,
-    #         'insurance_policy_number': None,
-    #     },
-    # ]  
+    # page_patients = paginator.get_page(page_number)
+    from .fake_patients import fake_patient_data
     context = {
         'department': department,
-        'patients': page_patients,
+        'patients': fake_patient_data,
     }
     return render(request, 'departments/show_patients.html', context)
-# def update_doctor_detail(request, doctor_id:int):
-#     doctor = Doctor.objects.get(id=doctor_id)
-#     context = {'doctor': doctor}
-#     return render('departments/update_doctor.html', context)
+
+
+from django.http import JsonResponse
+ 
+def search_patients(request, department_id:int):
+    search_input = request.GET.get('search_input')
+    print(search_input)
+    department_patients = get_object_or_404(Department, id=department_id).get_all_patients()
+    patients_ids = [patient.id for patient in department_patients]
+    filtered_patients = Patient.objects.filter(
+        (
+            Q(first_name__icontains=search_input) |
+            Q(last_name__icontains=search_input) |
+            Q(phone__icontains=search_input) |
+            Q(address__icontains=search_input) |
+            Q(insurance_provider__icontains=search_input) |
+            Q(insurance_policy_number__icontains=search_input)
+        ), id__in=patients_ids
+    )
+    print(filtered_patients)
+    context = {
+        'searched_patients': filtered_patients,
+    }
+    return render(request, 'partials/patients_search_results.html', context)

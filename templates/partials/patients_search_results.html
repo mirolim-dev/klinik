@@ -1,0 +1,22 @@
+{% load static %}
+{% for patient in patients %}
+    <tr>
+        <td>{{ patient.id }}</td>
+        <td>{{ patient.first_name }}</td>
+        <td>{{ patient.last_name }}</td>
+        <td>{{ patient.phone }}</td>
+        <td>{{ patient.gender }}</td>
+        <td>{{ patient.address }}</td>
+        <td>{{ patient.date_of_birth }}</td>
+        <td>{{ patient.insurance_provider }}</td>
+        <td>{{ patient.insurance_policy_number }}</td>
+        <td>
+            <span>
+
+                <a href="#" class="mr-4" data-toggle="tooltip"
+                    data-placement="top" title="View"><i
+                            class="fa fa-eye color-muted"></i></a>
+            </span>
+        </td>
+    </tr>
+{% endfor %}
