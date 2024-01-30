@@ -63,7 +63,7 @@ class Staff(CustomUser):
     barcode_file_path = models.CharField(max_length=255, unique=True, blank=True)
     # date_joined = models.DateTimeField(auto_now_add=True)  #already exist in CustomUser
     edited_at = models.DateTimeField(auto_now=True)
-
+    
     def __str__(self):
         return self.get_full_name()
 
