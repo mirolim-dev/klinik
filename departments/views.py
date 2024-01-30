@@ -43,20 +43,18 @@ def show_all_patients_by_department(request, department_id:int):
     patients = department.get_all_patients()
     paginator = Paginator(patients, 10)  # Show 10 departments per page
     page_number = request.GET.get('page')
-    # page_patients = paginator.get_page(page_number)
+    page_patients = paginator.get_page(page_number)
     from .fake_patients import fake_patient_data
     context = {
         'department': department,
-        'patients': fake_patient_data,
+        'patients': fake_patient_data,#replace fake_patient_data with page_patients in production
     }
     return render(request, 'departments/show_patients.html', context)
 
 
-from django.http import JsonResponse
  
 def search_patients(request, department_id:int):
     search_input = request.GET.get('search_input')
-    print(search_input)
     department_patients = get_object_or_404(Department, id=department_id).get_all_patients()
     patients_ids = [patient.id for patient in department_patients]
     filtered_patients = Patient.objects.filter(
@@ -69,7 +67,6 @@ def search_patients(request, department_id:int):
             Q(insurance_policy_number__icontains=search_input)
         ), id__in=patients_ids
     )
-    print(filtered_patients)
     context = {
         'searched_patients': filtered_patients,
     }

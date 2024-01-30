@@ -75,7 +75,7 @@ class Bed(models.Model):
         (0, "Available"),
         (1, "Occupied"),
     )
-    status = models.IntegerField(choices=STATUS_CHOICES, default=1)
+    status = models.IntegerField(choices=STATUS_CHOICES, default=0)
 
     class Meta:
         ordering = ['status']

@@ -69,7 +69,7 @@ class Staff(CustomUser):
 
     def save(self, *args, **kwargs):
         """Method is being handled because of barcode_data and 
-            barcode_file_path shoul be created automatically""" 
+            barcode_file_path should be created automatically""" 
         if not self.pk:#checking is object creating or updating
             self.barcode_data = generate_barcode_data('999')
             #999 is for making stuff's barcode data from ProductCollections' barcode data  
@@ -79,6 +79,7 @@ class Staff(CustomUser):
 
     def get_all_available_time(self):
         return self.availabletime_set.select_related('staff')
+
 
 class Doctor(Staff):
     profession = models.ForeignKey(DoctorSpecialization, on_delete=models.DO_NOTHING)
