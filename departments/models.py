@@ -42,7 +42,7 @@ class Department(models.Model):
 
     def get_all_patients(self):
         admissions = self.get_all_admissions()
-        patients = tuple(set(admission.patinent for admission in admissions))
+        patients = tuple(set(admission.patient for admission in admissions))
         return patients 
 
 
