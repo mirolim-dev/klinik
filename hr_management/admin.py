@@ -18,7 +18,7 @@ admin.site.register(Patient, PatientAdmin)
 
 
 class StaffAdmin(admin.ModelAdmin):
-    list_display = ['id', 'first_name', 'last_name', 'gender', 
+    list_display = ['id', 'username', 'first_name', 'last_name', 'gender', 
                     'phone', 'address', 'specialization',
                     'department', 'working', 'salary', 
                     'salary_currency', 'date_joined', 'edited_at']

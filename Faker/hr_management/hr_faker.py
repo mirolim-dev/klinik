@@ -10,7 +10,7 @@ from departments.models import (
 
 
 def create_patients_objects():
-    from fake_data_center.hr_management_data.patients import patients_data
+    from Faker.fake_data_center.hr_management_data.patients import patients_data
     countdown = 0
     for patient_data in patients_data:
         try:
@@ -22,7 +22,7 @@ def create_patients_objects():
 
 
 def create_staff_specializations():
-    from fake_data_center.hr_management_data.specializations import staff_specializations
+    from Faker.fake_data_center.hr_management_data.specializations import staff_specializations
     countdown = 0
     for staff_spc in staff_specializations:
         try:
@@ -34,7 +34,7 @@ def create_staff_specializations():
 
 
 def create_doctor_specializations():
-    from fake_data_center.hr_management_data.specializations import doctor_specializations
+    from Faker.fake_data_center.hr_management_data.specializations import doctor_specializations
     countdown = 0
     for doctor_spc in doctor_specializations:
         try:
@@ -46,7 +46,7 @@ def create_doctor_specializations():
 
 
 def create_staffs_objects():
-    from fake_data_center.hr_management_data.staffs import staffs_data
+    from Faker.fake_data_center.hr_management_data.staffs import staffs_data
     departments = Department.objects.all()
     staff_specializations = StaffSpecialization.objects.all()
     countdown = 0
@@ -56,9 +56,9 @@ def create_staffs_objects():
         salary = round(random.uniform(15000.00, 20000000.00), 2)
         salary_currency = random.choice([0, 1, 2])
         try:
-            StaffSpecialization.objects.create(
+            Staff.objects.create(
                 **staff_data, department=department,
-                staff_specialization=staff_specialization,
+                specialization=staff_specialization,
                 salary=salary, salary_currency=salary_currency
                 )
             countdown += 1
@@ -68,7 +68,7 @@ def create_staffs_objects():
 
 
 def create_doctor_objects():
-    from fake_data_center.hr_management_data.doctors import doctors_data
+    from Faker.fake_data_center.hr_management_data.doctors import doctors_data
     departments = Department.objects.all()
     doctor_specializations = DoctorSpecialization.objects.all()
     countdown = 0
@@ -79,7 +79,7 @@ def create_doctor_objects():
         profession = random.choice(doctor_specializations)
         position = random.choice([0, 1, 2, 3, 4])
         try:
-            StaffSpecialization.objects.create(
+            Doctor.objects.create(
                 **doctor_data, department=department,
                 salary=salary, salary_currency=salary_currency,
                 profession=profession, position=position

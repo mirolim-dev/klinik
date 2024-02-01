@@ -15,7 +15,7 @@ from hr_management.models import Patient
 
 
 def create_department_objects():
-    from fake_data_center.departments_data.departments import departments_data
+    from Faker.fake_data_center.departments_data.departments import departments_data
     countdown = 0
     for department_data in departments_data:
         try:
@@ -27,22 +27,24 @@ def create_department_objects():
 
 
 def create_room_and_room_stuff_objects():
-    from fake_data_center.departments_data.rooms import room_names, stuff_names
+    from Faker.fake_data_center.departments_data.rooms import room_names, stuff_names
     departments = Department.objects.all()
     # Generate 20 Room data
     rooms = []
     for name in room_names:
         department = random.choice(departments)
         name = f"{department.name} | {name}"
-        room = Room.objects.create(name=name, department=department)
-        rooms.append(room)
+        try:
+            room = Room.objects.create(name=name, department=department)
+            rooms.append(room)
+        except:
+            continue
 
     # Generate 20 RoomStuff data
     for _ in range(50):
         room = random.choice(rooms)
         name = random.choice(stuff_names)
         quantity = random.randint(1, 10)
-        created_at = datetime.now() - timedelta(days=random.randint(1, 30))
         RoomStuff.objects.create(room=room, name=name, quantity=quantity)
     print(f"20 Rooms and 50 RoomStuffs created successfully✅✅")
 
@@ -56,11 +58,13 @@ def create_bed_objects(numbers_of_objects=20):
         room = random.choice(rooms)
         number_of_beds = random.randint(1, 4)
         price_for_one_day = round(random.uniform(150000.00, 2000000.00), 2)
-        Bed.objects.create(room=room, number_of_beds=number_of_beds, price_for_one_day=price_for_one_day, status=0)
-
+        try:
+            Bed.objects.create(room=room, number_of_beds=number_of_beds, price_for_one_day=price_for_one_day, status=0)
+        except:
+            continue
 
 def create_meal_objects():
-    from fake_data_center.departments_data.meals import meals_data
+    from Faker.fake_data_center.departments_data.meals import meals_data
     countdown = 0
     for meal_data in meals_data:
         try:
