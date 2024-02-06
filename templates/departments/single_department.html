@@ -39,7 +39,7 @@
                     </a>    
                 </div>
                 <div class="col-lg-3 col-sm-6">
-                    <a href="{% url 'show-doctors--by-department' department_id=department.id %}">
+                    <a href="{% url 'show-doctors-by-department' department_id=department.id %}">
                         <div class="card">
                             <div class="stat-widget-one card-body">
                                 <div class="stat-icon d-inline-block">
@@ -54,30 +54,34 @@
                     </a>
                 </div>
                 <div class="col-lg-3 col-sm-6">
-                    <div class="card">
-                        <div class="stat-widget-one card-body">
-                            <div class="stat-icon d-inline-block">
-                                <i class="fa-solid fa-users-line text-primary border-primary"></i>
-                            </div>
-                            <div class="stat-content d-inline-block">
-                                <div class="stat-text">Staffs</div>
-                                <div class="stat-digit">{{ department.get_all_active_staffs.count }}</div>
+                    <a href="{% url "show-staffs-by-department" department_id=department.id %}">
+                        <div class="card">
+                            <div class="stat-widget-one card-body">
+                                <div class="stat-icon d-inline-block">
+                                    <i class="fa-solid fa-users-line text-primary border-primary"></i>
+                                </div>
+                                <div class="stat-content d-inline-block">
+                                    <div class="stat-text">Staffs</div>
+                                    <div class="stat-digit">{{ department.get_all_active_staffs.count }}</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-lg-3 col-sm-6">
-                    <div class="card">
-                        <div class="stat-widget-one card-body">
-                            <div class="stat-icon d-inline-block">
-                                <i class="fa-solid fa-address-card text-primary border-primary"></i>
-                            </div>
-                            <div class="stat-content d-inline-block">
-                                <div class="stat-text">Admissions</div>
-                                <div class="stat-digit">{{ department.get_all_admissions.count }}</div>
+                    <a href="{% url 'show-admissions-by-department' department_id=department.id %}">
+                        <div class="card">
+                            <div class="stat-widget-one card-body">
+                                <div class="stat-icon d-inline-block">
+                                    <i class="fa-solid fa-address-card text-primary border-primary"></i>
+                                </div>
+                                <div class="stat-content d-inline-block">
+                                    <div class="stat-text">Admissions</div>
+                                    <div class="stat-digit">{{ department.get_all_admissions.count }}</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
 

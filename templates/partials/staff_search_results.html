@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_filter %}
 {% for staff in searched_staffs %}
     <tr>
         <td>{{ staff.id }}</td>
@@ -6,7 +7,7 @@
         <td>{{ staff.first_name }}</td>
         <td>{{ staff.last_name }}</td>
         <td>{{ staff.phone }}</td>
-        <td>{{ staff.gender }}</td>
+        <td>{{ staff.gender | display_gender }}</td>
         <td>{{ staff.address }}</td>
         <td>{{ staff.specialization }}</td>
         <td>{{ staff.date_joined }}</td>
@@ -21,7 +22,7 @@
             <td>No</td>
         {% endif %}
         <td>{{ staff.salary }}</td>
-        <td>{{ staff.salary_currency }}</td>
+        <td>{{ staff.salary_currency | display_currency }}</td>
         <td>
             <span>
                 <a href="#" class="mr-4" data-toggle="tooltip"

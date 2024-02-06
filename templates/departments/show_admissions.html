@@ -9,7 +9,7 @@
                 <div class="card-header">
                     <div id="no-results-message"></div>
                     <div class="col-lg-6">
-                        <form id="search-form" class="form-inline float-right" hx-post="{% url 'search-staffs-by-department' department_id=department.id %}" hx-trigger="keyup" hx-target="#search-results">
+                        <form id="search-form" class="form-inline float-right" hx-post="{% url 'search-admissions-by-department' department_id=department.id %}" hx-trigger="keyup" hx-target="#search-results">
                             {% csrf_token %}
                                 <div class="form-group mb-2">
                                 <input type="text" name="search_input" class="form-control" placeholder="Search" hx-get-param="search_input">
@@ -23,55 +23,33 @@
                     <div class="table-responsive">
                         <table class="table table-bordered verticle-middle table-responsive-sm">
                             <thead>
-                                {% if staffs %}
+                                {% if admissions %}
                                     <tr>
                                         <th scope="col">ID</th>
-                                        <th scope="col">Username</th>
-                                        <th scope="col">Firstname</th>
-                                        <th scope="col">Lastname</th>
-                                        <th scope="col">Phone</th>
-                                        <th scope="col">Gender</th>
-                                        <th scope="col">Address</th>
-                                        <th scope="col">Specialization</th>
-                                        <th scope="col">Date joined</th>
-                                        <th scope="col">Image</th>
-                                        <th scope="col">Working</th>
-                                        <th scope="col">Salary</th>
-                                        <th scope="col">Salary Currency</th>
+                                        <th scope="col">Patient</th>
+                                        <th scope="col">Bed</th>
+                                        <th scope="col">Starts at</th>
+                                        <th scope="col">Finishes at</th>
+                                        <th scope="col">Status</th>
                                         <th scope="col">Actions</th>
                                     </tr>
                                 {% else %}
-                                    <h5>There are no staffs in this department</h5>
+                                    <h5>There are no admissions in this department</h5>
                                 {% endif %}
                             </thead>
                             <tbody id="search-results">
-                                {% if searched_staffs %}
+                                {% if searched_admissions %}
                                     {% include "partials/doctor_search_results.html" %}
                                 {% else %}
-                                    {% for staff in staffs %}
+                                    {% for admission in admissions %}
                                         <tr>
-                                            <td>{{ staff.id }}</td>
-                                            <td>{{ staff.username }}</td>
-                                            <td>{{ staff.first_name }}</td>
-                                            <td>{{ staff.last_name }}</td>
-                                            <td>{{ staff.phone }}</td>
-                                            <td>{{ staff.gender|display_gender }}</td>
-                                            <td>{{ staff.address }}</td>
-                                            <td>{{ staff.specialization }}</td>
-                                            <td>{{ staff.date_joined | date }}</td>
-                                            {% if staff.image %}
-                                                <td>{{ staff.image.url }}</td>
-                                            {% else %}
-                                                <td>No image</td>
-                                            {% endif %}
-                                                
-                                            {% if staff.working %}
-                                                <td>Yes</td>
-                                            {% else %}
-                                                <td>No</td>
-                                            {% endif %}
-                                            <td>{{ staff.salary }}</td>
-                                            <td>{{ staff.salary_currency|display_currency }}</td>
+                                            <td>{{ admission.id }}</td>
+                                            <td>{{ admission.patient.get_full_name }}</td>
+                                            <td>{{ admission.bed.room.name }}</td>
+                                            <td>{{ admission.starts_at | date }}</td>
+                                            <td>{{ admission.finishes_at | date }}</td>
+                                            <td>{{ admission.status | display_admission_status }}</td>
+                                            
                                             <td>
                                                 <span>
 
@@ -89,9 +67,9 @@
                     </div>
                     <nav>
                         <ul class="pagination pagination-sm pagination-gutter">
-                            {% if staffs.has_previous %}
+                            {% if admissions.has_previous %}
                                 <li class="page-item page-indicator">
-                                    <a class="page-link" href="?page={{ staffs.previous_page_number }}">
+                                    <a class="page-link" href="?page={{ admissions.previous_page_number }}">
                                         <i class="icon-arrow-left"></i></a>
                                 </li>
                             {% else %}
@@ -102,21 +80,21 @@
                                     </li>
                                 {% endif %}
                             {% endif %}
-                            {% if staffs.paginator.num_pages > 1 %}
-                                {% for num in staffs.paginator.page_range %}
-                                    {% if num == staffs.number %}
+                            {% if admissions.paginator.num_pages > 1 %}
+                                {% for num in admissions.paginator.page_range %}
+                                    {% if num == admissions.number %}
                                         <li class="page-item active"><a class="page-link" href="javascript:void()">{{ num }}</a></li>
                                     {% else %}
                                         <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
                                     {% endif %}
                                 {% endfor %}
                             {% endif %}
-                            {% if staffs.has_next %}
+                            {% if admissions.has_next %}
                                 <li class="page-item page-indicator">
-                                    <a class="page-link" href="?page={{ staffs.next_page_number }}">
+                                    <a class="page-link" href="?page={{ admissions.next_page_number }}">
                                         <i class="icon-arrow-right"></i></a>
                                 </li>
-                                {% if staffs %}
+                                {% if admissions %}
                                     <li class="page-item page-indicator">
                                         <a class="page-link" href="#">
                                             <i class="icon-arrow-right"></i>

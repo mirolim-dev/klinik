@@ -30,3 +30,14 @@ def display_currency(position):
         (2, 'EUR')
     )
     return dict(CURRENCY_CHOICES).get(position, '')
+
+
+@register.filter
+def display_admission_status(position):
+    STATUS_CHOICES = (
+        (1, "Pending"),
+        (2, "In process"),
+        (3, "Done"),
+        (4, "Cancelled"),
+    )
+    return dict(STATUS_CHOICES).get(position, '')

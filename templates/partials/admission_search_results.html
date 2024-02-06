@@ -1,0 +1,22 @@
+{% load static %}
+{% load custom_filter %}
+{% for admission in searched_admissions %}
+    <tr>
+        <td>{{ admission.id }}</td>
+        <td>{{ admission.department.name }}</td>
+        <td>{{ admission.patient.get_full_name }}</td>
+        <td>{{ admission.bed.room.name }}</td>
+        <td>{{ admission.starts_at | date }}</td>
+        <td>{{ admission.finishes_at | date }}</td>
+        <td>{{ admission.status | display_admission_status }}</td>
+        
+        <td>
+            <span>
+
+                <a href="#" class="mr-4" data-toggle="tooltip"
+                    data-placement="top" title="View"><i
+                            class="fa fa-eye color-muted"></i></a>
+            </span>
+        </td>
+    </tr>
+{% endfor %}

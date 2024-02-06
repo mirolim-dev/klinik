@@ -1,4 +1,5 @@
 {% load static %}
+{% load custom_filter %}
 {% for doctor in searched_doctors %}
     <tr>
         <td>{{ doctor.id }}</td>
@@ -6,10 +7,10 @@
         <td>{{ doctor.first_name }}</td>
         <td>{{ doctor.last_name }}</td>
         <td>{{ doctor.phone }}</td>
-        <td>{{ doctor.gender }}</td>
+        <td>{{ doctor.gender | display_gender }}</td>
         <td>{{ doctor.address }}</td>
         <td>{{ doctor.profession }}</td>
-        <td>{{ doctor.position }}</td>
+        <td>{{ doctor.position | display_position }}</td>
         <td>{{ doctor.date_joined }}</td>
         {% if doctor.image %}
             <td>{{ doctor.image.url }}</td>
@@ -22,7 +23,7 @@
             <td>No</td>
         {% endif %}
         <td>{{ doctor.salary }}</td>
-        <td>{{ doctor.salary_currency }}</td>
+        <td>{{ doctor.salary_currency | display_currency }}</td>
         <td>
             <span>
 

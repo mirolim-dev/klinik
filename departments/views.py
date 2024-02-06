@@ -5,6 +5,9 @@ from django.db.models import Q
 from .models import (
     Department, Room,
     )
+from .meals_models import (
+    Admission,
+)
 from hr_management.models import (
     Doctor, Patient, Staff,
     )
@@ -158,15 +161,47 @@ def search_staffs_by_department(request, department_id:int):
     search_input = request.POST.get('search_input')
     searched_staffs = Staff.objects.filter(
         Q(department=department) & 
-        Q(username__icontains=search_input) |
-        Q(first_name__icontains=search_input) |
-        Q(last_name__icontains=search_input) |
-        Q(phone__icontains=search_input) |
-        Q(address__icontains=search_input) |
-        Q(profession__name__icontains=search_input) |
-        Q(salary__icontains=search_input)
+        (
+            Q(username__icontains=search_input) |
+            Q(first_name__icontains=search_input) |
+            Q(last_name__icontains=search_input) |
+            Q(phone__icontains=search_input) |
+            Q(address__icontains=search_input) |
+            Q(specialization__name__icontains=search_input) |
+            Q(salary__icontains=search_input)
+        )
     )
     context = {
         'searched_staffs': searched_staffs
     }
-    return render(request, 'partials/doctor_search_results.html', context)
+    return render(request, 'partials/staff_search_results.html', context)
+
+
+def show_admissions_by_department(request, department_id:int):
+    department = get_object_or_404(Department, id=department_id)
+    admissions = Admission.objects.filter(department=department)
+    page = request.GET.get('page')
+    paginator = Paginator(admissions, 10)
+    paginated_admissions = paginator.get_page(page)
+    context = {
+        'department': department,
+        'admissions': paginated_admissions,
+    }
+    return render(request, 'departments/show_admissions.html', context)
+
+
+def search_admissions_by_department(request, department_id:int):
+    department = get_object_or_404(Department, id=department_id)
+    search_input = request.POST.get('search_input')
+    searched_admissions = Admission.objects.filter(
+        Q(department=department) & 
+        (
+         Q(patient__first_name__icontains=search_input) |
+         Q(patient__last_name__icontains=search_input) |
+         Q(bed__room__name__icontains=search_input)   
+        )
+    )
+    context = {
+        'searched_admissions': searched_admissions
+    }
+    return render(request, 'partials/admission_search_results.html', context)
