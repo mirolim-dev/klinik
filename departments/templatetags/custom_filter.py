@@ -21,3 +21,12 @@ def display_gender(position):
         (1, "Male"),
     )
     return dict(GENDER_CHOICES).get(position, '')
+
+@register.filter
+def display_currency(position):
+    CURRENCY_CHOICES = (
+        (0, 'UZS'),
+        (1, 'USD'),
+        (2, 'EUR')
+    )
+    return dict(CURRENCY_CHOICES).get(position, '')
