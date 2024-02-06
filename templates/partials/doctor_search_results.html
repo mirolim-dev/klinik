@@ -1,0 +1,35 @@
+{% load static %}
+{% for doctor in searched_doctors %}
+    <tr>
+        <td>{{ doctor.id }}</td>
+        <td>{{ doctor.username }}</td>
+        <td>{{ doctor.first_name }}</td>
+        <td>{{ doctor.last_name }}</td>
+        <td>{{ doctor.phone }}</td>
+        <td>{{ doctor.gender }}</td>
+        <td>{{ doctor.address }}</td>
+        <td>{{ doctor.profession }}</td>
+        <td>{{ doctor.position }}</td>
+        <td>{{ doctor.date_joined }}</td>
+        {% if doctor.image %}
+            <td>{{ doctor.image.url }}</td>
+        {% else %}
+            <td>No image</td>
+        {% endif %}
+        {% if doctor.working %}
+            <td>Yes</td>
+        {% else %}
+            <td>No</td>
+        {% endif %}
+        <td>{{ doctor.salary }}</td>
+        <td>{{ doctor.salary_currency }}</td>
+        <td>
+            <span>
+
+                <a href="#" class="mr-4" data-toggle="tooltip"
+                    data-placement="top" title="View"><i
+                            class="fa fa-eye color-muted"></i></a>
+            </span>
+        </td>
+    </tr>
+{% endfor %}

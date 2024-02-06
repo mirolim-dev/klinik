@@ -1,0 +1,33 @@
+{% load static %}
+{% for staff in searched_staffs %}
+    <tr>
+        <td>{{ staff.id }}</td>
+        <td>{{ staff.username }}</td>
+        <td>{{ staff.first_name }}</td>
+        <td>{{ staff.last_name }}</td>
+        <td>{{ staff.phone }}</td>
+        <td>{{ staff.gender }}</td>
+        <td>{{ staff.address }}</td>
+        <td>{{ staff.specialization }}</td>
+        <td>{{ staff.date_joined }}</td>
+        {% if staff.image %}
+            <td>{{ staff.image.url }}</td>
+        {% else %}
+            <td>No image</td>
+        {% endif %}
+        {% if staff.working %}
+            <td>Yes</td>
+        {% else %}
+            <td>No</td>
+        {% endif %}
+        <td>{{ staff.salary }}</td>
+        <td>{{ staff.salary_currency }}</td>
+        <td>
+            <span>
+                <a href="#" class="mr-4" data-toggle="tooltip"
+                    data-placement="top" title="View"><i
+                            class="fa fa-eye color-muted"></i></a>
+            </span>
+        </td>
+    </tr>
+{% endfor %}

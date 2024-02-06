@@ -2,15 +2,19 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 
-from .models import Department
-from hr_management.models import Doctor, Patient
+from .models import (
+    Department, Room,
+    )
+from hr_management.models import (
+    Doctor, Patient, Staff,
+    )
 # Create your views here.
 
 def main_index(request):
     departments = Department.objects.all()
     search_data = request.POST.get('search_input')
     if search_data:
-        departments = Department.objects.filter(name__icontains=search_data)
+        departments = Department.objects.filter(name__icontains=search_data).order_by('id')
     paginator = Paginator(departments, 10)  # Show 10 departments per page
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -44,9 +48,7 @@ def show_all_patients_by_department(request, department_id:int):
     paginator = Paginator(patients, 10)  # Show 10 departments per page
     page_number = request.GET.get('page')
     page_patients = paginator.get_page(page_number)
-    if page_patients:
-        pass
-    else:
+    if not page_patients:
         from .fake_patients import fake_patient_data
         page_patients = fake_patient_data
     context = {
@@ -59,7 +61,6 @@ def show_all_patients_by_department(request, department_id:int):
  
 def search_patients(request, department_id:int):
     search_input = request.GET.get('search_input')
-    print("Search input: ", search_input)
     department_patients = get_object_or_404(Department, id=department_id).get_all_patients()
     patients_ids = [patient.id for patient in department_patients]
     filtered_patients = Patient.objects.filter(
@@ -69,11 +70,103 @@ def search_patients(request, department_id:int):
             Q(phone__icontains=search_input) |
             Q(address__icontains=search_input) |
             Q(insurance_provider__icontains=search_input) |
-            Q(insurance_policy_number__icontains=search_input)
+            Q(insurance_policy_number__icontains=search_input) |
+            Q(id__contains=search_input)
         ), id__in=patients_ids
     )
-    print(f"Filtered patients", filtered_patients)
     context = {
         'searched_patients': filtered_patients,
     }
     return render(request, 'partials/patients_search_results.html', context)
+
+
+def show_all_rooms(request, department_id):
+    department = get_object_or_404(Department, id=department_id)
+    rooms = department.get_all_rooms()
+    paginator = Paginator(rooms, 10)
+    page = request.GET.get('page')
+    paginated_rooms = paginator.get_page(page)
+    context = {
+        'department': department,
+        'rooms': paginated_rooms,
+    }
+    return render(request, 'departments/show_all_rooms.html', context)
+
+
+def search_rooms(request, department_id):
+    department = get_object_or_404(Department, id=department_id)
+    search_input = request.POST.get('search_input')
+    searched_rooms = Room.objects.filter(
+        Q(department=department) & 
+        Q(name__icontains=search_input)
+    )
+    context = {
+        'searched_rooms': searched_rooms
+    }
+    return render(request, 'partials/room_search_results.html', context)
+
+
+def show_doctors_by_department(request, department_id:int):
+    department = get_object_or_404(Department, id=department_id)
+    doctors = Doctor.objects.filter(department=department)
+    page = request.GET.get('page')
+    paginator = Paginator(doctors, 10)
+    paginated_doctors = paginator.get_page(page)
+    context = {
+        'department': department,
+        'doctors': paginated_doctors,
+    }
+    return render(request, 'departments/show_doctors.html', context)
+
+
+def search_doctors_by_department(request, department_id:int):
+    department = get_object_or_404(Department, id=department_id)
+    search_input = request.POST.get('search_input')
+    searched_doctors = Doctor.objects.filter(
+        Q(department=department) & 
+        (
+            Q(username__icontains=search_input) |
+            Q(first_name__icontains=search_input) |
+            Q(last_name__icontains=search_input) |
+            Q(phone__icontains=search_input) |
+            Q(address__icontains=search_input) |
+            Q(profession__name__icontains=search_input) |
+            Q(salary__icontains=search_input)
+        )
+    )
+    context = {
+        'searched_doctors': searched_doctors
+    }
+    return render(request, 'partials/doctor_search_results.html', context)
+
+
+def show_staffs_by_department(request, department_id:int):
+    department = get_object_or_404(Department, id=department_id)
+    staffs = Staff.objects.filter(department=department)
+    page = request.GET.get('page')
+    paginator = Paginator(staffs, 10)
+    paginated_staffs = paginator.get_page(page)
+    context = {
+        'department': department,
+        'staffs': paginated_staffs,
+    }
+    return render(request, 'departments/show_staffs.html', context)
+
+
+def search_staffs_by_department(request, department_id:int):
+    department = get_object_or_404(Department, id=department_id)
+    search_input = request.POST.get('search_input')
+    searched_staffs = Staff.objects.filter(
+        Q(department=department) & 
+        Q(username__icontains=search_input) |
+        Q(first_name__icontains=search_input) |
+        Q(last_name__icontains=search_input) |
+        Q(phone__icontains=search_input) |
+        Q(address__icontains=search_input) |
+        Q(profession__name__icontains=search_input) |
+        Q(salary__icontains=search_input)
+    )
+    context = {
+        'searched_staffs': searched_staffs
+    }
+    return render(request, 'partials/doctor_search_results.html', context)

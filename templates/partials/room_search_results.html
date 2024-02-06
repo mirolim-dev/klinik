@@ -1,0 +1,19 @@
+{% load static %}
+{% for room in searched_rooms %}
+    <tr>
+        <td>{{ room.id }}</td>
+        <td>{{ room.name }}</td>
+        {% if room.bed %}
+            <td>Yes</td>
+        {% else %}
+            <td>No</td>
+        {% endif %}
+        <td>
+            <span>
+                <a href="#" class="mr-4" data-toggle="tooltip"
+                    data-placement="top" title="View"><i
+                            class="fa fa-eye color-muted"></i></a>
+            </span>
+        </td>
+    </tr>
+{% endfor %}

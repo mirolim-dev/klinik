@@ -39,17 +39,19 @@
                     </a>    
                 </div>
                 <div class="col-lg-3 col-sm-6">
-                    <div class="card">
-                        <div class="stat-widget-one card-body">
-                            <div class="stat-icon d-inline-block">
-                                <i class="fa-solid fa-user-doctor text-primary border-primary"></i>
-                            </div>
-                            <div class="stat-content d-inline-block">
-                                <div class="stat-text">Doctors</div>
-                                <div class="stat-digit">{{ department.get_all_active_doctors.count }}</div>
+                    <a href="{% url 'show-doctors--by-department' department_id=department.id %}">
+                        <div class="card">
+                            <div class="stat-widget-one card-body">
+                                <div class="stat-icon d-inline-block">
+                                    <i class="fa-solid fa-user-doctor text-primary border-primary"></i>
+                                </div>
+                                <div class="stat-content d-inline-block">
+                                    <div class="stat-text">Doctors</div>
+                                    <div class="stat-digit">{{ department.get_all_active_doctors.count }}</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-lg-3 col-sm-6">
                     <div class="card">
@@ -82,17 +84,19 @@
             <div class="row">
                 
                 <div class="col-lg-3 col-sm-6">
-                    <div class="card">
-                        <div class="stat-widget-one card-body">
-                            <div class="stat-icon d-inline-block">
-                                <i class="fa-sharp fa-solid fa-tents text-primary border-primary"></i>
-                            </div>
-                            <div class="stat-content d-inline-block">
-                                <div class="stat-text">Rooms</div>
-                                <div class="stat-digit">{{ department.get_all_rooms.count }}</div>
+                    <a href="{% url "show-all-rooms" department_id=department.id %}">
+                        <div class="card">
+                            <div class="stat-widget-one card-body">
+                                <div class="stat-icon d-inline-block">
+                                    <i class="fa-sharp fa-solid fa-tents text-primary border-primary"></i>
+                                </div>
+                                <div class="stat-content d-inline-block">
+                                    <div class="stat-text">Rooms</div>
+                                    <div class="stat-digit">{{ department.get_all_rooms.count }}</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 
                 <div class="col-lg-3 col-sm-6">

@@ -1,0 +1,138 @@
+{% extends "base/base.html" %}
+{% load static %}
+{% load custom_filter %}
+{% block content %}
+    <div class="content-body">
+        <!--Table Bootstrap-->
+        <div class="col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <div id="no-results-message"></div>
+                    <div class="col-lg-6">
+                        <form id="search-form" class="form-inline float-right" hx-post="{% url 'search-doctors-by-department' department_id=department.id %}" hx-trigger="keyup" hx-target="#search-results">
+                            {% csrf_token %}
+                                <div class="form-group mb-2">
+                                <input type="text" name="search_input" class="form-control" placeholder="Search" hx-get-param="search_input">
+                            </div>
+                            <button type="submit" class="btn btn-primary mb-2">Search</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="card-body">
+                    
+                    <div class="table-responsive">
+                        <table class="table table-bordered verticle-middle table-responsive-sm">
+                            <thead>
+                                {% if doctors %}
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Username</th>
+                                        <th scope="col">Firstname</th>
+                                        <th scope="col">Lastname</th>
+                                        <th scope="col">Phone</th>
+                                        <th scope="col">Gender</th>
+                                        <th scope="col">Address</th>
+                                        <th scope="col">Profession</th>
+                                        <th scope="col">Position</th>
+                                        <th scope="col">Date joined</th>
+                                        <th scope="col">Image</th>
+                                        <th scope="col">Working</th>
+                                        <th scope="col">Salary</th>
+                                        <th scope="col">Salary Currency</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                {% else %}
+                                    <h5>There are no doctors in this department</h5>
+                                {% endif %}
+                            </thead>
+                            <tbody id="search-results">
+                                {% if searched_doctors %}
+                                    {% include "partials/doctor_search_results.html" %}
+                                {% else %}
+                                    {% for doctor in doctors %}
+                                        <tr>
+                                            <td>{{ doctor.id }}</td>
+                                            <td>{{ doctor.username }}</td>
+                                            <td>{{ doctor.first_name }}</td>
+                                            <td>{{ doctor.last_name }}</td>
+                                            <td>{{ doctor.phone }}</td>
+                                            <td>{{ doctor.gender|display_gender }}</td>
+                                            <td>{{ doctor.address }}</td>
+                                            <td>{{ doctor.profession }}</td>
+                                            <td>{{ doctor.position|display_position }}</td>
+                                            <td>{{ doctor.date_joined }}</td>
+                                            {% if doctor.image %}
+                                                <td>{{ doctor.image.url }}</td>
+                                            {% else %}
+                                                <td>No image</td>
+                                            {% endif %}
+                                                
+                                            {% if doctor.working %}
+                                                <td>Yes</td>
+                                            {% else %}
+                                                <td>No</td>
+                                            {% endif %}
+                                            <td>{{ doctor.salary }}</td>
+                                            <td>{{ doctor.salary_currency }}</td>
+                                            <td>
+                                                <span>
+
+                                                    <a href="#" class="mr-4" data-toggle="tooltip"
+                                                        data-placement="top" title="View"><i
+                                                                class="fa fa-eye color-muted"></i></a>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
+                            </tbody>
+                        </table>
+                        
+                    </div>
+                    <nav>
+                        <ul class="pagination pagination-sm pagination-gutter">
+                            {% if doctors.has_previous %}
+                                <li class="page-item page-indicator">
+                                    <a class="page-link" href="?page={{ doctors.previous_page_number }}">
+                                        <i class="icon-arrow-left"></i></a>
+                                </li>
+                            {% else %}
+                                {% if patients %}
+                                    <li class="page-item page-indicator">
+                                        <a class="page-link" href="#">
+                                            <i class="icon-arrow-left"></i></a>
+                                    </li>
+                                {% endif %}
+                            {% endif %}
+                            
+                            {% for num in doctors.paginator.page_range %}
+                                {% if num == doctors.number %}
+                                    <li class="page-item active"><a class="page-link" href="javascript:void()">{{ num }}</a></li>
+                                {% else %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if doctors.has_next %}
+                                <li class="page-item page-indicator">
+                                    <a class="page-link" href="?page={{ doctors.next_page_number }}">
+                                        <i class="icon-arrow-right"></i></a>
+                                </li>
+                            {% else %}
+                                {% if doctors %}
+                                    <li class="page-item page-indicator">
+                                        <a class="page-link" href="#">
+                                            <i class="icon-arrow-right"></i>
+                                        </a>
+                                    </li>
+                                {% endif %}
+                            {% endif %}
+                            
+                        </ul>
+                    </nav>
+                </div>
+                
+            </div>     
+        </div>
+    </div>
+{% endblock content %}

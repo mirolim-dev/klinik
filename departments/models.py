@@ -22,8 +22,7 @@ class Department(models.Model):
         return self.staff_department.filter(working=True).select_related('specialization')
             
     def get_all_active_doctors(self):
-        return self.staff_department.filter(working=True, doctor__isnull=False).select_related('specialization')
-            
+        return self.staff_department.filter(doctor__isnull=False).select_related('specialization')   
 
     def get_head_doctor(self):
         head_doctor = self.staff_department.filter(working=True, \

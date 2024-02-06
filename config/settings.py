@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     # packages
     'ckeditor',
     'ckeditor_uploader',
+
 ]
 
 CKEDITOR_UPLOAD_PATH = "media/uploads/"
