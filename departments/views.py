@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 
 from .models import (
-    Department, Room,
+    Department, Room, Bed
     )
 from .meals_models import (
     Admission,
@@ -205,3 +205,33 @@ def search_admissions_by_department(request, department_id:int):
         'searched_admissions': searched_admissions
     }
     return render(request, 'partials/admission_search_results.html', context)
+
+
+def show_beds_by_department(request, department_id:int):
+    department = get_object_or_404(Department, id=department_id)
+    beds = Bed.objects.filter(room__department=department)
+    page = request.GET.get('page')
+    paginator = Paginator(beds, 10)
+    paginated_beds = paginator.get_page(page)
+    context = {
+        'department': department,
+        'beds': paginated_beds,
+    }
+    return render(request, 'departments/show_all_beds.html', context)
+
+
+def search_beds_by_department(request, department_id:int):
+    department = get_object_or_404(Department, id=department_id)
+    search_input = request.POST.get('search_input')
+    searched_beds = Bed.objects.filter(
+        Q(room__department=department) & 
+        (
+            Q(room__name__icontains=search_input) |
+            Q(number_of_beds__icontains=search_input) |
+            Q(price_for_one_day__icontains=search_input)   
+        )
+    )
+    context = {
+        'searched_beds': searched_beds
+    }
+    return render(request, 'partials/bed_search_results.html', context)

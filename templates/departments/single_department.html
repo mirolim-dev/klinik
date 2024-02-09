@@ -104,17 +104,19 @@
                 </div>
                 
                 <div class="col-lg-3 col-sm-6">
-                    <div class="card">
-                        <div class="stat-widget-one card-body">
-                            <div class="stat-icon d-inline-block">
-                                <i class="fa-sharp fa-solid fa-bed text-primary border-primary"></i>
-                            </div>
-                            <div class="stat-content d-inline-block">
-                                <div class="stat-text">Beds</div>
-                                <div class="stat-digit">{{ department.get_all_beds.count }}</div>
+                    <a href="{% url 'show-beds-by-department' department_id=department.id %}">
+                        <div class="card">
+                            <div class="stat-widget-one card-body">
+                                <div class="stat-icon d-inline-block">
+                                    <i class="fa-sharp fa-solid fa-bed text-primary border-primary"></i>
+                                </div>
+                                <div class="stat-content d-inline-block">
+                                    <div class="stat-text">Beds</div>
+                                    <div class="stat-digit">{{ department.get_all_beds.count }}</div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 
                 <div class="col-lg-3 col-sm-6">

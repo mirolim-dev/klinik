@@ -1,0 +1,19 @@
+{% load static %}
+{% load custom_filter %}
+{% for bed in searched_beds %}
+    <tr>
+        <td>{{ bed.id }}</td>
+        <td>{{ bed.room.name }}</td>
+        <td>{{ bed.number_of_beds }}</td>
+        <td>{{ bed.price_for_one_day }} UZS</td>
+        <td>{{ bed.status | display_bed_status }}</td>
+        <td>{{ bed.get_number_of_available_places }}</td>
+        <td>
+            <span>
+                <a href="#" class="mr-4" data-toggle="tooltip"
+                    data-placement="top" title="View"><i
+                            class="fa fa-eye color-muted"></i></a>
+            </span>
+        </td>
+    </tr>
+{% endfor %}

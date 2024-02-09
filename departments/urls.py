@@ -8,6 +8,7 @@ from .views import (
     search_doctors_by_department, 
     show_staffs_by_department, search_staffs_by_department,
     show_admissions_by_department, search_admissions_by_department,
+    show_beds_by_department, search_beds_by_department,
 
 )
 
@@ -28,4 +29,8 @@ urlpatterns = [
 
     path('<int:department_id>/show_admissions/', show_admissions_by_department, name='show-admissions-by-department'),
     path('<int:department_id>/search_admissions/', search_admissions_by_department, name='search-admissions-by-department'),
+
+    path('<int:department_id>/show_beds/', show_beds_by_department, name='show-beds-by-department'),
+    path('<int:department_id>/search_beds/', search_beds_by_department, name='search-beds-by-department'),
+
 ]   

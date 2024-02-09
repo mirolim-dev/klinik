@@ -67,7 +67,6 @@ class RoomStuff(models.Model):
 
 class Bed(models.Model):
     room = models.OneToOneField(Room, on_delete=models.CASCADE)
-    # department = models.ForeignKey(Department, on_delete=models.DO_NOTHING)
     number_of_beds = models.PositiveBigIntegerField(default=1)
     price_for_one_day = models.DecimalField(max_digits=25, decimal_places=2, default=0.00)
     STATUS_CHOICES = (

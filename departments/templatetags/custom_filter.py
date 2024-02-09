@@ -41,3 +41,12 @@ def display_admission_status(position):
         (4, "Cancelled"),
     )
     return dict(STATUS_CHOICES).get(position, '')
+
+
+@register.filter
+def display_bed_status(position):
+    STATUS_CHOICES = (
+        (0, "Available"),
+        (1, "Occupied"),
+    )
+    return dict(STATUS_CHOICES).get(position, '')
