@@ -57,7 +57,7 @@
                                             <td>
                                                 <span>
 
-                                                    <a href="#" class="mr-4" data-toggle="tooltip"
+                                                    <a href="{% url "patient-profile" patient_id=patient.id %}" class="mr-4" data-toggle="tooltip"
                                                         data-placement="top" title="View"><i
                                                                 class="fa fa-eye color-muted"></i></a>
                                                 </span>
@@ -116,60 +116,3 @@
         </div>
     </div>
 {% endblock content %}
-{% block scripts %}
-    <script>
-        console.log("script working")
-        var tableBody = document.getElementById('search-results');
-        console.log("data coming from utside", tableBody)
-        searchForm = document.getElementById('search-form')
-        console.log("Search Form is: ", searchForm)
-        document.getElementById('search-form').addEventListener('htmx:response', function (event) {
-            console.log('Event:', event);
-            // ... additional console.log statements
-          });
-        {% comment %} document.getElementById('search-form').addEventListener('htmx:response', function (event) {
-            var searchResults = event.detail.xhr.response;
-            var tableBody = document.getElementById('search-results');
-            console.log(tableBody)
-            var noResultsMessage = document.getElementById('no-results-message');
-            tableBody.innerHTML = '';
-            console.log("Search results: ", searchResults)
-            if (searchResults.length === 0) {
-                noResultsMessage.innerText = 'No searched data found.';
-                return;
-            }
-
-            noResultsMessage.innerText = '';
-            
-            searchResults.forEach(function (patient) {
-                var row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${patient.id}</td>
-                    <td>${patient.first_name}</td>
-                    <td>${patient.last_name}</td>
-                    <td>${patient.phone}</td>
-                    <td>${patient.gender}</td>
-                    <td>${patient.address}</td>
-                    <td>${patient.date_of_birth}</td>
-                    <td>${patient.insurance_provider}</td>
-                    <td>${patient.insurance_policy_number}</td>
-                    <td>
-                        <span>
-                            <a href="javascript:void()" class="mr-4" data-toggle="tooltip" data-placement="top" title="Edit">
-                                <i class="fa fa-pencil color-muted"></i>
-                            </a>
-                            <a href="#" class="mr-4" data-toggle="tooltip" data-placement="top" title="View">
-                                <i class="fa fa-eye color-muted"></i>
-                            </a>
-                            <a href="javascript:void()" data-toggle="tooltip" data-placement="top" title="Close">
-                                <i class="fa fa-close color-danger"></i>
-                            </a>
-                        </span>
-                    </td>
-                `;
-
-                tableBody.appendChild(row);
-            });
-        }); {% endcomment %}
-    </script>
-{% endblock scripts %}
