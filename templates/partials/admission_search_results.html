@@ -3,11 +3,11 @@
 {% for admission in searched_admissions %}
     <tr>
         <td>{{ admission.id }}</td>
-        <td>{{ admission.department.name }}</td>
         <td>{{ admission.patient.get_full_name }}</td>
         <td>{{ admission.bed.room.name }}</td>
         <td>{{ admission.starts_at | date }}</td>
         <td>{{ admission.finishes_at | date }}</td>
+        <td>{{ admission.calculate_total_price }} UZS</td>
         <td>{{ admission.status | display_admission_status }}</td>
         
         <td>
