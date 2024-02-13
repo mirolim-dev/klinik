@@ -3,6 +3,9 @@ from django.core.exceptions import ValidationError
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
+
 # from local
 from hr_management.models import Patient
 # from .validators import validate_payment_invoice
@@ -70,8 +73,16 @@ class Payment(models.Model):
         if self.invoice.status > 2:
             raise ValidationError(f"You can't do payment for this Invoice. Because it is {self.invoice.get_string_data_of_status()}")
 
+
+class InvoiceService(models.Model):
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    service = GenericForeignKey('content_type', 'object_id')
+    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)   
     
-    
+    def __str__(self):
+        return f"{self.service} | {self.invoice}"
+
 
 @receiver(post_save, sender=Payment)
 def update_invoice_status(sender, instance, **kwargs):
