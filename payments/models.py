@@ -1,13 +1,17 @@
 from django.db import models
+from django.db.models import Sum, F, ExpressionWrapper, DecimalField
 from django.core.exceptions import ValidationError
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from decimal import Decimal
 
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 
 # from local
 from hr_management.models import Patient
+from departments.meals_models import Admission
+from events.consulting_models import DiagnozPatientUsage, ConsultingPatientUsage
 # from .validators import validate_payment_invoice
 # Create your models here.
 class Invoice(models.Model):
@@ -47,6 +51,37 @@ class Invoice(models.Model):
     def get_string_data_of_status(self)->str:
         return self.STATUS_CHOICES[self.status-1][1]
 
+    def get_all_services(self):
+        return self.invoiceservice_set.prefetch_related('service', 'invoice')
+
+    def get_total_amount(self):
+        admission_instance = Admission.objects.first() or None
+        diagnoz_patient_usage_instance = DiagnozPatientUsage.objects.first() or None
+        consulting_patient_usage_instance = ConsultingPatientUsage.objects.first() or None
+        admission = self.invoiceservice_set.filter(content_type=ContentType.objects.get_for_model(admission_instance))[0]\
+            if admission_instance else None
+        diagnoz_ids = admission.diagnoses.values_list('id', flat=True) if admission else []
+        diagnoz_patient_usages = self.invoiceservice_set.filter(content_type=ContentType.objects.get_for_model(diagnoz_patient_usage_instance)).exclude(object_id__in=diagnoz_ids)\
+            if diagnoz_patient_usage_instance else None
+        consulting_patient_usages = self.invoiceservice_set.filter(content_type=ContentType.objects.get_for_model(consulting_patient_usage_instance))\
+            if consulting_patient_usage_instance else None
+
+        admission_total_amount = admission.calculate_total_price() if admission else Decimal('0.00')
+        diagnoz_patient_usages_total_amount = Decimal('0.00')
+        if diagnoz_patient_usages:
+            diagnoz_patient_usages_total_amount = diagnoz_patient_usages.aggregate(total_price=ExpressionWrapper(Sum('diagnoz__price'), output_field=DecimalField()))['total_price']
+        consulting_patient_usages_total_amount = Decimal('0.00')
+        if consulting_patient_usages:
+            consulting_patient_usages_total_amount = consulting_patient_usages.aggregate(total_price=ExpressionWrapper(Sum('consulting__price'), \
+                output_field=DecimalField()))['total_price']
+        total_amount = admission_total_amount + diagnoz_patient_usages_total_amount + consulting_patient_usages_total_amount
+        return total_amount
+
+    def calculate_total_amount_after_discount(self):
+        total_amount = self.get_total_amount()
+        result_amount = total_amount - Decimal(total_amount/self.discount)
+        return result_amount
+        
 
 class Payment(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
@@ -80,6 +115,9 @@ class InvoiceService(models.Model):
     service = GenericForeignKey('content_type', 'object_id')
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)   
     
+    class Meta:
+        unique_together = ('content_type', 'object_id', 'invoice')
+
     def __str__(self):
         return f"{self.service} | {self.invoice}"
 
