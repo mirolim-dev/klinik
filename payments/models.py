@@ -11,6 +11,7 @@ class Invoice(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     total_amount = models.DecimalField(max_digits=25, decimal_places=2, default=0.00)
     residual_amount = models.DecimalField(max_digits=25, decimal_places=2, default=0.00)
+    discount = models.PositiveBigIntegerField(default=0) #by presentage
     STATUS_CHOICES = (
         (1, 'Pending'),
         (2, 'Partly paid'),
