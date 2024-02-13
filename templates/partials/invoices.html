@@ -1,0 +1,111 @@
+<!--Table Bootstrap-->
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-header">
+            <div id="no-results-message"></div>
+            <div class="col-lg-6">
+                <form id="search-form" class="form-inline float-right" hx-post="#" hx-trigger="keyup" hx-target="#search-results">
+                    {% csrf_token %}
+                        <div class="form-group mb-2">
+                        <input type="text" name="search_input" class="form-control" placeholder="Search" hx-get-param="search_input">
+                    </div>
+                    <button type="submit" class="btn btn-primary mb-2">Search</button>
+                </form>
+            </div>
+        </div>
+        <div class="card-body">
+            
+            <div class="table-responsive">
+                <table class="table table-bordered verticle-middle table-responsive-sm">
+                    <thead>
+                        {% if patient.get_all_invoices %}
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Patient</th>
+                                <th scope="col">Total amount</th>
+                                <th scope="col">Residual amount</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Created at</th>
+                                <th scope="col">Updated at</th>
+                                <th scope="col">Available till</th>
+                                <th scope='col'>Actions</th>
+                            </tr>
+                        {% else %}
+                            <h5>There are no invoices in this department</h5>
+                        {% endif %}
+                    </thead>
+                    <tbody id="search-results">
+                        {% if searched_invoices %}
+                            {% include "partials/doctor_search_results.html" %}
+                        {% else %}
+                            {% for invoice in patient.get_all_invoices %}
+                                <tr>
+                                    <td>{{ invoice.id }}</td>
+                                    <td>{{ invoice.patient.get_full_name }}</td>
+                                    <td>{{ invoice.total_amount }} UZS</td>
+                                    <td>{{ invoice.residual_amount }} UZS</td>
+                                    <td>{{ invoice.status }}</td>
+                                    <td>{{ invoice.description|truncatechars:15 }}</td>
+                                    <td>{{ invoice.created_at }}</td>
+                                    <td>{{ invoice.updated_at }}</td>
+                                    <td>{{ invoice.available_till|date }}</td>
+                                    <td>
+                                        <span>
+
+                                            <a href="#" class="mr-4" data-toggle="tooltip"
+                                                data-placement="top" title="View"><i
+                                                        class="fa fa-eye color-muted"></i></a>
+                                        </span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+                
+            </div>
+            <nav>
+                <ul class="pagination pagination-sm pagination-gutter">
+                    {% if invoices.has_previous %}
+                        <li class="page-item page-indicator">
+                            <a class="page-link" href="?page={{ invoices.previous_page_number }}">
+                                <i class="icon-arrow-left"></i></a>
+                        </li>
+                    {% else %}
+                        {% if patients %}
+                            <li class="page-item page-indicator">
+                                <a class="page-link" href="#">
+                                    <i class="icon-arrow-left"></i></a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                    {% if invoices.paginator.num_pages > 1 %}
+                        {% for num in invoices.paginator.page_range %}
+                            {% if num == invoices.number %}
+                                <li class="page-item active"><a class="page-link" href="javascript:void()">{{ num }}</a></li>
+                            {% else %}
+                                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                    {% if invoices.has_next %}
+                        <li class="page-item page-indicator">
+                            <a class="page-link" href="?page={{ invoices.next_page_number }}">
+                                <i class="icon-arrow-right"></i></a>
+                        </li>
+                        {% if invoices %}
+                            <li class="page-item page-indicator">
+                                <a class="page-link" href="#">
+                                    <i class="icon-arrow-right"></i>
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                    
+                </ul>
+            </nav>
+        </div>
+        
+    </div>     
+</div>
