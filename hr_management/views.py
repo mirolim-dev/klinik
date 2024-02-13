@@ -11,7 +11,6 @@ from .models import (
 
 def patient_profile(request, patient_id:int):
     patient = get_object_or_404(Patient, id=patient_id)
-
     context = {
         'patient': patient,
     }

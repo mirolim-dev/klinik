@@ -46,6 +46,9 @@ class Patient(CustomUser):
     def get_all_service_usages(self):
         pass
 
+    def get_all_invoices(self):
+        return self.invoice_set.select_related('patient')
+
 
 class Staff(CustomUser):
     specialization = models.ForeignKey(StaffSpecialization, on_delete=models.DO_NOTHING)
