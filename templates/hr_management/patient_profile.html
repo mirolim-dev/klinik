@@ -61,7 +61,7 @@
                                             <div id="payment-and-invoices" class="tab-pane fade">
                                                 <div class="my-post-content pt-3">
                                                     <!--Invoice content here-->
-                                                    {% include "partials/invoices.html" %}
+                                                    {% include "partials/hrm/invoices.html" %}
                                                 </div>
                                             </div>
                                             <div id="personal-info" class="tab-pane fade active show">
@@ -197,9 +197,3 @@
             Content body end
         ***********************************-->
 {% endblock content %}
-
-{% block scripts %}
-<script src="{% static "dashboard/vendor/datatables/js/jquery.dataTables.min.js" %}"></script>
-<script src="{% static "dashboard/js/plugins-init/datatables.init.js" %}"></script>
-
-{% endblock scripts %}

@@ -1,0 +1,21 @@
+{% for invoice in searched_invoices %}
+    <tr>
+        <td>{{ invoice.id }}</td>
+        <td>{{ invoice.patient.get_full_name }}</td>
+        <td>{{ invoice.total_amount }} UZS</td>
+        <td>{{ invoice.residual_amount }} UZS</td>
+        <td>{{ invoice.get_string_data_of_status     }}</td>
+        <td>{{ invoice.description|truncatechars:15 }}</td>
+        <td>{{ invoice.created_at }}</td>
+        <td>{{ invoice.updated_at }}</td>
+        <td>{{ invoice.available_till|date }}</td>
+        <td>
+            <span>
+
+                <a href="#" class="mr-4" data-toggle="tooltip"
+                    data-placement="top" title="View"><i
+                            class="fa fa-eye color-muted"></i></a>
+            </span>
+        </td>
+    </tr>
+{% endfor %}
