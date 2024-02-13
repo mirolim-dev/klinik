@@ -19,6 +19,7 @@ def patient_profile(request, patient_id:int):
         search_input = request.POST.get('search_input')
         searched_invoices = Invoice.objects.filter(
             Q(patient=patient) & (
+                Q(id__icontains=search_input)|
                 Q(total_amount__icontains=search_input)|
                 Q(description__icontains=search_input)
             )

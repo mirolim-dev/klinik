@@ -4,7 +4,7 @@
         <div class="card-header">
             <div id="no-results-message"></div>
             <div class="col-lg-6">
-                <form id="search-form" class="form-inline float-right" hx-post="{% url "patient-profile" patient_id=patient.id %}" hx-trigger="keyup" hx-target="#search-results">
+                <form id="search-form" class="form-inline float-right" hx-post="{% url "patient-profile" patient_id=patient.id %}" hx-target="#search-results">
                     {% csrf_token %}
                         <div class="form-group mb-2">
                         <input type="text" name="search_input" class="form-control" placeholder="Search" hx-get-param="search_input">
