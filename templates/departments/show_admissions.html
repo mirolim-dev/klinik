@@ -30,6 +30,7 @@
                                         <th scope="col">Bed</th>
                                         <th scope="col">Starts at</th>
                                         <th scope="col">Finishes at</th>
+                                        <th scope='col'>Total price</th>
                                         <th scope="col">Status</th>
                                         <th scope="col">Actions</th>
                                     </tr>
@@ -48,8 +49,8 @@
                                             <td>{{ admission.bed.room.name }}</td>
                                             <td>{{ admission.starts_at | date }}</td>
                                             <td>{{ admission.finishes_at | date }}</td>
+                                            <td>{{ admission.calculate_total_price }} UZS</td>
                                             <td>{{ admission.status | display_admission_status }}</td>
-                                            
                                             <td>
                                                 <span>
 

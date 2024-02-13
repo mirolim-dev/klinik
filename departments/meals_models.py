@@ -1,6 +1,9 @@
 from django.db import models
+from django.db.models import Sum, F, ExpressionWrapper, DecimalField
 from django.utils import timezone
 from ckeditor_uploader.fields import RichTextUploadingField
+
+from decimal import Decimal
 
 # from local
 from .models import Department, Bed
@@ -65,5 +68,23 @@ class Admission(models.Model):
     def __str__(self):
         return f"{self.patient.__str__()} | {self.bed.__str__()}"
     
-    
+    # @property
+    def calculate_total_price(self):
+        """This function calculates the total price of admission by 
+           (bed, diagnoses, meals, curings) fields' price
+        """
+        bed_price = self.bed.price_for_one_day
+        diagnoz_price = self.diagnoses.aggregate(total_price=ExpressionWrapper(Sum('price'), output_field=DecimalField()))['total_price'] or Decimal('0.00')
 
+        # Calculate meal price considering individual prices per MealTime
+        mealtime_price = self.meals.aggregate(
+            total_price=ExpressionWrapper(Sum(F('price')), output_field=DecimalField())
+        )['total_price'] or Decimal('0.00')
+
+        curing_price = self.curings.aggregate(
+            total_price=ExpressionWrapper(Sum(F('price')), output_field=DecimalField())
+        )['total_price'] or Decimal('0.00')
+
+        total_price = diagnoz_price + mealtime_price + curing_price + bed_price
+        total_price_formatted = total_price.quantize(Decimal('0.00'), rounding='ROUND_HALF_UP')
+        return total_price_formatted
