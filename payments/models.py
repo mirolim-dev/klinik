@@ -12,7 +12,9 @@ from django.contrib.contenttypes.models import ContentType
 from hr_management.models import Patient
 from departments.meals_models import Admission
 from events.consulting_models import DiagnozPatientUsage, ConsultingPatientUsage
-# from .validators import validate_payment_invoice
+from .validators import (
+    validate_invoice_to_create, validate_invoice_to_update 
+    )
 # Create your models here.
 class Invoice(models.Model):
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
@@ -39,10 +41,13 @@ class Invoice(models.Model):
         super().clean()
         if self.total_amount <= 0:
             raise ValidationError("total amount should be greater then 0")
-    
+        if self.pk:
+            validate_invoice_to_update(self.pk, self.status)
     def save(self, *args, **kwargs):
         if not self.pk:
+            validate_invoice_to_create(self.patient)
             self.residual_amount = self.total_amount
+
         super().save(*args, **kwargs)
 
     def get_all_payments(self):
