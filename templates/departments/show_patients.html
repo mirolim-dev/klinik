@@ -1,5 +1,6 @@
 {% extends "base/base.html" %}
 {% load static %}
+{% load custom_filter %}
 {% block content %}
     <div class="content-body">
         <!--Table Bootstrap-->
@@ -49,7 +50,7 @@
                                             <td>{{ patient.first_name }}</td>
                                             <td>{{ patient.last_name }}</td>
                                             <td>{{ patient.phone }}</td>
-                                            <td>{{ patient.gender }}</td>
+                                            <td>{{ patient.gender | display_gender }}</td>
                                             <td>{{ patient.address }}</td>
                                             <td>{{ patient.date_of_birth }}</td>
                                             <td>{{ patient.insurance_provider }}</td>
