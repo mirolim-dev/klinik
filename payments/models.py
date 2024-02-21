@@ -108,8 +108,6 @@ class Payment(models.Model):
 
     def clean(self):
         super().clean()
-        if self.invoice.residual_amount < self.amount <= 0:
-            raise ValidationError(f"amount should be greater then 0 and less then invoice's residual_amount")
         if self.invoice.status > 2:
             raise ValidationError(f"You can't do payment for this Invoice. Because it is {self.invoice.get_string_data_of_status()}")
 
