@@ -84,7 +84,7 @@ class Invoice(models.Model):
 
     def calculate_total_amount_after_discount(self):
         total_amount = self.get_total_amount()
-        result_amount = total_amount - Decimal(total_amount/self.discount)
+        result_amount = total_amount - Decimal((total_amount*self.discount)/100)
         return result_amount
         
 
