@@ -5,7 +5,6 @@ from datetime import datetime, date
 
 # from warehouse.models import ProductUsage, ProductsCollection, Product
 from .models import Invoice, InvoiceService, Payment
-from departments.meals_models import Admission
 from events.consulting_models import DiagnozPatientUsage, ConsultingPatientUsage
 
 @receiver(post_save, sender=DiagnozPatientUsage)

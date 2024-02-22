@@ -1,7 +1,12 @@
 {% extends "base/base.html" %}
 {% load static %}
-{% load custom_filters %}
-
+{% comment %} {% load custom_filters %} {% endcomment %}
+{{ invoice }}
 {% block content %}
-    
+    <div class="content-body">
+        <div class="container-fluid">
+            <h4>  {{ invoice }}</h4>
+            <p>Single Invoice right here</p>
+        </div>
+    </div>
 {% endblock content %}
