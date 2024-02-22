@@ -87,9 +87,24 @@ class Invoice(models.Model):
         result_amount = total_amount - Decimal((total_amount*self.discount)/100)
         return result_amount
         
+class InvoiceService(models.Model):
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    service = GenericForeignKey('content_type', 'object_id')
+    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE) 
+    paid = models.BooleanField(default=False)  
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+
+    class Meta:
+        unique_together = ('content_type', 'object_id', 'invoice')
+
+    def __str__(self):
+        return f"{self.service} | {self.invoice}"
+
 
 class Payment(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
+    invoice_service = models.ForeignKey(InvoiceService, on_delete=models.CASCADE, null=True)
     PAYMENT_TYPE_CHOICES = (
         (1, 'Cash'),
         (2, 'Plastic Card'),
@@ -110,21 +125,6 @@ class Payment(models.Model):
         super().clean()
         if self.invoice.status > 2:
             raise ValidationError(f"You can't do payment for this Invoice. Because it is {self.invoice.get_string_data_of_status()}")
-
-
-class InvoiceService(models.Model):
-    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
-    object_id = models.PositiveIntegerField()
-    service = GenericForeignKey('content_type', 'object_id')
-    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE) 
-    paid = models.BooleanField(default=False)  
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
-
-    class Meta:
-        unique_together = ('content_type', 'object_id', 'invoice')
-
-    def __str__(self):
-        return f"{self.service} | {self.invoice}"
 
 
 @receiver(post_save, sender=Payment)
