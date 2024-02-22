@@ -101,10 +101,19 @@ class InvoiceService(models.Model):
     def __str__(self):
         return f"{self.service} | {self.invoice}"
 
+    def get_total_amount(self):
+        total_amount = Decimal(0.00)
+        if isinstance(self.service, Admission):
+            total_amount = self.service.calculate_total_price()
+        elif isinstance(self.service, DiagnozPatientUsage):
+            total_amount = self.service.diagnoz.price
+        elif isinstance(self.service, ConsultingPatientUsage):
+            total_amount = self.service.consulting.price
+        return total_amount
 
 class Payment(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
-    invoice_service = models.ForeignKey(InvoiceService, on_delete=models.CASCADE, null=True)
+    invoice_service = models.ManyToManyField(InvoiceService)
     PAYMENT_TYPE_CHOICES = (
         (1, 'Cash'),
         (2, 'Plastic Card'),
