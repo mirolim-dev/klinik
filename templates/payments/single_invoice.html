@@ -1,12 +1,98 @@
 {% extends "base/base.html" %}
 {% load static %}
-{% comment %} {% load custom_filters %} {% endcomment %}
-{{ invoice }}
+{% load custom_filter %}
 {% block content %}
+
+
+
     <div class="content-body">
+        <!--Table Bootstrap-->
         <div class="container-fluid">
-            <h4>  {{ invoice }}</h4>
-            <p>Single Invoice right here</p>
+            <div class="row page-titles mx-0">
+                <div class="col-sm-4 p-md-0">
+                    <div class="welcome-text">
+                        <b>Invoice ID:</b>
+                        <p>{{ invoice.id }}</p>
+                    </div>
+                </div>
+                <div class="col-sm-4 p-md-0">
+                    <div class="welcome-text">
+                        <b>Invoice Total Amount:</b>
+                        <p>{{ invoice.total_amount }}</p>
+                    </div>
+                </div>
+                <div class="col-sm-4 p-md-0">
+                    <div class="welcome-text">
+                        <b>Invoice Residual Amount:</b>
+                        <p>{{ invoice.residual_amount }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <div id="no-results-message"></div>
+                        <div class="col-lg-6">
+                            <b>From: </b><p>Meridian Diagnostical Clinic</p>
+                            <b>Address: </b><p>Fergana city. Farobiy street 45</p>
+                            <b>Phone: </b><p>+78 458 98 75</p>
+                        </div>
+                        <div class="col-lg-6">
+                            <b>To: </b><p>{{ invoice.patient.get_full_name }}</p>
+                            <b>Address: </b><p>{{ invoice.patient.address }}</p>
+                            <b>Phone: </b><p>{{ invoice.patient.phone }}</p>
+                        </div>
+                        
+                    </div>
+                    <div class="card-body">
+                        
+                        <div class="table-responsive">
+                            <table class="table table-bordered verticle-middle table-responsive-sm">
+                                <thead>
+                                    {% if invoice %}    
+                                        <h5>Used Services</h5>
+                                        <tr>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Service name</th>
+                                            <th scope="col">Total price</th>
+                                            <th scope="col">Payment Done</th>
+                                            <th scope="col">Used at</th>
+                                            <th scope="col">Actions</th>
+                                        </tr>
+                                    {% else %}
+                                        <h5>There are no services</h5>
+                                    {% endif %}
+                                </thead>
+                                <tbody id="search-results">
+                                    {% for service in invoice.get_all_services %}
+                                        <tr>
+                                            <td>{{ service.id }}</td>
+                                            <td>{{ service.service }}</td>
+                                            {% if service.paid %}
+                                                <td>Yes</td>
+                                            {% else %}
+                                                <td>No</td>
+                                            {% endif %}
+                                            <td>{{ service.created_at }}</td>
+
+                                            <td>
+                                                <span>
+
+                                                    <a href="#" class="mr-4" data-toggle="tooltip"
+                                                        data-placement="top" title="View"><i
+                                                                class="fa fa-eye color-muted"></i></a>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            
+                        </div>
+                    </div>
+                    
+                </div>     
+            </div>
         </div>
     </div>
 {% endblock content %}
