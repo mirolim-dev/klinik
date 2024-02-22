@@ -116,8 +116,9 @@ class InvoiceService(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     service = GenericForeignKey('content_type', 'object_id')
-    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)   
-    created_at = models.DateTimeField(auto_now_add=True)
+    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE) 
+    paid = models.BooleanField(default=False)  
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
 
     class Meta:
         unique_together = ('content_type', 'object_id', 'invoice')

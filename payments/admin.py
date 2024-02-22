@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Payment, Invoice
+from .models import Payment, Invoice, InvoiceService
 # Register your models here.
 
 class InvoiceAdmin(admin.ModelAdmin):
@@ -18,3 +18,7 @@ class PaymentAdmin(admin.ModelAdmin):
     search_fields = ['id', 'invoice__patient__first_name', 'invoice__patient__last_name', 'amount', 'created_at']
 admin.site.register(Payment, PaymentAdmin)
 
+
+class InvoiceServiceAdmin(admin.ModelAdmin):
+    list_display = ['id', 'content_type', 'object_id', 'invoice', 'created_at']
+admin.site.register(InvoiceService, InvoiceServiceAdmin)
