@@ -111,6 +111,16 @@ class InvoiceService(models.Model):
             total_amount = self.service.consulting.price
         return total_amount
 
+    def display_service_name(self):
+        name = ""
+        if isinstance(self.service, Admission):
+            name = "Admission for Treatment"
+        elif isinstance(self.service, DiagnozPatientUsage):
+            name = self.service.diagnoz.name
+        elif isinstance(self.service, ConsultingPatientUsage):
+            name = self.service.consulting.name
+        return name
+
 class Payment(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
     invoice_service = models.ManyToManyField(InvoiceService)

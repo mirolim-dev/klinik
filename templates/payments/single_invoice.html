@@ -67,7 +67,7 @@
                                     {% for service in invoice.get_all_services %}
                                         <tr>
                                             <td>{{ service.id }}</td>
-                                            <td>{{ service.service }}</td>
+                                            <td>{{ service.display_service_name }}</td>
                                             <td>{{ service.get_total_amount }} UZS</td>
                                             {% if service.paid %}
                                                 <td>Yes</td>
