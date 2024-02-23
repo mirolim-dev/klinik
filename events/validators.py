@@ -23,7 +23,7 @@ def validate_consulting(value):
 def validate_diagnoz(value):
     # (0, "Inactive"),
     # (1, "Active"),
-    if value.status == 0:
+    if value == 0:
         raise ValidationError("Diagnoz status should be active to choose")
 
 def validate_consulting_patient_usage_dpu(value):

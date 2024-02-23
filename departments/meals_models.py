@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import Sum, F, ExpressionWrapper, DecimalField
 from django.utils import timezone
+from django.db import transaction
 from ckeditor_uploader.fields import RichTextUploadingField
 
 from decimal import Decimal
@@ -69,10 +70,15 @@ class Admission(models.Model):
         return f"{self.patient.__str__()} | {self.bed.__str__()}"
     
     # @property
+    @transaction.atomic
     def calculate_total_price(self):
         """This function calculates the total price of admission by 
            (bed, diagnoses, meals, curings) fields' price
         """
+        # if not self.id and not transaction.get_autocommit():
+        #     # Save the instance to ensure it has an ID before accessing many-to-many relationships
+        #     with transaction.atomic():
+        #         self.save()
         bed_price = self.bed.price_for_one_day
         diagnoz_price = self.diagnoses.aggregate(total_price=ExpressionWrapper(Sum('price'), output_field=DecimalField()))['total_price'] or Decimal('0.00')
 

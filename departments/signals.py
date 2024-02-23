@@ -7,7 +7,7 @@ from datetime import datetime, date
 from payments.models import Invoice, InvoiceService
 from .meals_models import Admission
 
-@receiver(pre_save, sender=Admission)
+@receiver(post_save, sender=Admission)
 def update_invoice_amount_by_admission(sender, instance, **kwargs):
     patient = instance.patient
     admission_total_price = instance.calculate_total_price()
@@ -22,14 +22,19 @@ def update_invoice_amount_by_admission(sender, instance, **kwargs):
         invoice.residual_amount += admission_total_price
         invoice.save()
 
-
-@receiver(post_save, sender=Admission)
-def create_invoice_service_by_admission(sender, instance, **kwargs):
-    if instance.pk:
-        patient = instance.patient
-        invoice = Invoice.objects.filter(patient=patient, status__in=[1, 2])[0]
-        InvoiceService.objects.create(
+    InvoiceService.objects.create(
             content_type=ContentType.objects.get_for_model(instance),
             object_id=instance.id,
             invoice=invoice
         )
+
+# @receiver(post_save, sender=Admission)
+# def create_invoice_service_by_admission(sender, instance, **kwargs):
+#     if instance.pk:
+#         patient = instance.patient
+#         invoice = Invoice.objects.filter(patient=patient, status__in=[1, 2])[0]
+#         InvoiceService.objects.create(
+#             content_type=ContentType.objects.get_for_model(instance),
+#             object_id=instance.id,
+#             invoice=invoice
+#         )
