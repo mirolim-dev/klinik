@@ -17,7 +17,7 @@ def validate_consultant(value):
 def validate_consulting(value):
     # (0, "Inactive"),
     # (1, 'Active'),
-    if value.status == 0:
+    if value == 0:
         raise ValidationError(f"Consulting should be active to choose")
 
 def validate_diagnoz(value):
