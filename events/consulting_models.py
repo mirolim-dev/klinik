@@ -71,7 +71,7 @@ class DiagnozPatientUsage(models.Model):
     diagnoz = models.ForeignKey(Diagnoz, on_delete=models.CASCADE, validators=[validate_diagnoz])
     consulting_patient_usage = models.ForeignKey(
         ConsultingPatientUsage, on_delete=models.CASCADE, 
-        blank=True, null=True, validators=[validate_consulting_patient_usage_dpu])
+        blank=True, null=True)
     STATUS_CHOICES = (
         (1, "Waiting payment"),
         (2, "In que"),
@@ -81,6 +81,10 @@ class DiagnozPatientUsage(models.Model):
     result = RichTextUploadingField(default="Nothing in here")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def clean(self) -> None:
+        validate_consulting_patient_usage_dpu(self.consulting_patient_usage.status)
+        return super().clean()
 
     def __str__(self) -> str:
         return f"{self.patient.__str__()} | {self.diagnoz.name} | {self.status}"

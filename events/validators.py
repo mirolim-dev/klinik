@@ -33,7 +33,7 @@ def validate_consulting_patient_usage_dpu(value):
     """
     # (3, "Waiting diagnoses"),
     if value not in [1, 2]:
-        raise ValidationError("Consulting Patient usage status should be Pending or In que")
+        raise ValidationError("Consulting Patient usage status should be waiting payment or In que")
 
 def validate_consulting_patient_usage_status(value, status:list):
     """

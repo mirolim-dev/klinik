@@ -27,14 +27,3 @@ def update_invoice_amount_by_admission(sender, instance, **kwargs):
             object_id=instance.id,
             invoice=invoice
         )
-
-# @receiver(post_save, sender=Admission)
-# def create_invoice_service_by_admission(sender, instance, **kwargs):
-#     if instance.pk:
-#         patient = instance.patient
-#         invoice = Invoice.objects.filter(patient=patient, status__in=[1, 2])[0]
-#         InvoiceService.objects.create(
-#             content_type=ContentType.objects.get_for_model(instance),
-#             object_id=instance.id,
-#             invoice=invoice
-#         )

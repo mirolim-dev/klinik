@@ -43,6 +43,7 @@ class Invoice(models.Model):
             raise ValidationError("total amount should be greater then 0")
         if self.pk:
             validate_invoice_to_update(self.pk, self.status)
+
     def save(self, *args, **kwargs):
         if not self.pk:
             validate_invoice_to_create(self.patient)
@@ -95,8 +96,8 @@ class InvoiceService(models.Model):
     paid = models.BooleanField(default=False)  
     created_at = models.DateTimeField(auto_now_add=True, null=True)
 
-    class Meta:
-        unique_together = ('content_type', 'object_id', 'invoice')
+    # class Meta:
+    #     unique_together = ('content_type', 'object_id', 'invoice')
 
     def __str__(self):
         return f"{self.service} | {self.invoice}"
@@ -109,7 +110,7 @@ class InvoiceService(models.Model):
             total_amount = self.service.diagnoz.price
         elif isinstance(self.service, ConsultingPatientUsage):
             total_amount = self.service.consulting.price
-        return total_amount
+        return Decimal(str(total_amount))
 
     def display_service_name(self):
         name = ""

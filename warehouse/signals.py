@@ -32,7 +32,7 @@ def update_product_amount_in_stock(sender, instance, action, **kwargs):
             product = collection.product
             product.amount_in_stock, product.measure = calculate_product_amount(
                 product, collection.amount, collection.measure, False)
-            print(product.amount_in_stock, product.measure)
+            # print(product.amount_in_stock, product.measure)
             product.save()
             collection.is_exists = False
             collection.save()
